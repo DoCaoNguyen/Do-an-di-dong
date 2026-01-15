@@ -17,18 +17,18 @@ data class PostProfileData(
 )
 
 @Serializable
-data class Post(
+data class PostUser(
     val id: Int,
     val title: String,
     val users_id: Int,
     val content: String,
-    val image_url: String,
+    val imgUrl: String? = null,
     val status: String,
     val user: userPost,
 )
 
 @Serializable
 data class userPost(
-    val username: String,
+    val username: String?,
     val avatarurl: String?
 )
