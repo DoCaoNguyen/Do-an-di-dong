@@ -10,7 +10,7 @@ import com.bumptech.glide.Glide
 import com.doan.social.R
 import com.doan.social.model.Post
 
-class PostProfileAdapter(private val postList: MutableList<Post>, private val listener: OnClickPostItem) : RecyclerView.Adapter<PostProfileAdapter.PostViewHolder>() {
+class ProfileAdapter(private val postList: MutableList<Post>, private val listener: OnClickPostItem) : RecyclerView.Adapter<ProfileAdapter.PostViewHolder>() {
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
@@ -28,15 +28,11 @@ class PostProfileAdapter(private val postList: MutableList<Post>, private val li
         holder.txtTitle.text = item.title
         holder.txtContent.text = item.content
         holder.txtName.text = item.user?.username
-        if (item.user?.imgUrl != null) {
-            Glide.with(holder.itemView.context)
-                .load(item.user.imgUrl)
-                .into(holder.imgProfile)
-        } else {
-            Glide.with(holder.itemView.context)
-                .load(R.drawable.avartar_profile)
-                .into(holder.imgProfile)
-        }
+        Glide.with(holder.itemView.context)
+            .load(item.user?.avatarurl)
+            .placeholder(R.drawable.avartar_profile)
+            .error(R.drawable.avartar_profile)
+            .into(holder.imgProfile)
         holder.itemView.setOnClickListener {
             listener.onClickPostItem(item.id)
         }
@@ -46,7 +42,7 @@ class PostProfileAdapter(private val postList: MutableList<Post>, private val li
 
     class PostViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         var txtTitle = itemView.findViewById<TextView>(R.id.txtTitle)
-        var txtContent = itemView.findViewById<TextView>(R.id.txtContent)
+        var txtContent = itemView.findViewById<TextView>(R.id.txtComment)
         var txtName = itemView.findViewById<TextView>(R.id.txtName)
         var imgProfile = itemView.findViewById<ImageView>(R.id.imgProfile)
     }

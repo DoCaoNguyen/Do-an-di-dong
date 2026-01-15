@@ -2,7 +2,6 @@ package com.doan.social.view
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
@@ -13,7 +12,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.doan.social.R
-import com.doan.social.adapter.PostProfileAdapter
+import com.doan.social.adapter.ProfileAdapter
 import com.doan.social.model.Post
 import com.doan.social.model.UserData
 import com.doan.social.viewmodel.UserViewmodel
@@ -22,7 +21,7 @@ import kotlinx.coroutines.launch
 import okhttp3.OkHttpClient
 import kotlin.collections.emptyList
 
-class ProfileActivity : AppCompatActivity(), PostProfileAdapter.OnClickPostItem {
+class ProfileActivity : AppCompatActivity(), ProfileAdapter.OnClickPostItem {
     private lateinit var img_setting_profile: ImageView
     private lateinit var txt_userName: TextView
     private lateinit var txt_userGender: TextView
@@ -32,7 +31,7 @@ class ProfileActivity : AppCompatActivity(), PostProfileAdapter.OnClickPostItem 
     private val client = OkHttpClient()
 
     val postView = UserViewmodel(client)
-    var listPost: MutableList<Post> = mutableListOf<Post>()
+    var listPosts: MutableList<Post> = mutableListOf<Post>()
 
     var user: UserData = UserData(0,"","","","","","","","",emptyList())
 
@@ -63,12 +62,10 @@ class ProfileActivity : AppCompatActivity(), PostProfileAdapter.OnClickPostItem 
             txt_userGender.setText(user.gender)
             txt_userPhone.setText(user.phone)
             txt_userBirthday.setText(user.birthday)
-            listPost =  postView.getPostProfile(userId)
+            listPosts =  postView.getPostProfile(userId)
             rcv_postProfile.layoutManager = LinearLayoutManager(this@ProfileActivity)
-            rcv_postProfile.adapter = PostProfileAdapter(listPost,this@ProfileActivity)
+            rcv_postProfile.adapter = ProfileAdapter(listPosts,this@ProfileActivity)
         }
-
-
 
         img_setting_profile.setOnClickListener {
             val intent = Intent(this, SettingProfileActivity::class.java)

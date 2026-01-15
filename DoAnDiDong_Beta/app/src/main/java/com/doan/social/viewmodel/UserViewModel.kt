@@ -1,9 +1,7 @@
 package com.doan.social.viewmodel
 
-import android.R.attr.data
 import android.util.Log
 import com.doan.social.model.Post
-import com.doan.social.model.PostProfileRequest
 import com.doan.social.model.UserData
 import com.doan.social.model.UserRequest
 import com.doan.social.model.User_model
