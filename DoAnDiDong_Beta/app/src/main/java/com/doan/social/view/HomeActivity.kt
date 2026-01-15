@@ -6,10 +6,22 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.doan.social.R
+import com.doan.social.adapter.HomeAdapter
+import com.doan.social.model.Post
+import com.doan.social.viewmodel.HomeViewModel
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import kotlinx.coroutines.launch
 
 class HomeActivity : AppCompatActivity() {
+
+    private var homeViewModel = HomeViewModel()
+    private lateinit var postList: MutableList<Post>
+    private lateinit var rcv_home: RecyclerView
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -18,6 +30,15 @@ class HomeActivity : AppCompatActivity() {
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             insets
         }
+
+        rcv_home = findViewById(R.id.rcvHome)
+        lifecycleScope.launch {
+            postList = homeViewModel.getPost()
+            rcv_home.layoutManager = LinearLayoutManager(this@HomeActivity)
+            rcv_home.adapter = HomeAdapter(postList)
+        }
+
+
 
         val botNav = findViewById<BottomNavigationView>(R.id.btnNavi)
         botNav.setSelectedItemId(R.id.bottom_home)
