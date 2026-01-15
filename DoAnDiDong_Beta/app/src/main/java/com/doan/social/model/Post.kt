@@ -7,7 +7,7 @@ data class Post(
     val title: String?,
     val users_id: Int,
     val content: String?,
-    val image_url: String,
+    val image_url: String?,
     val status: String,
     val user: User?,
 )

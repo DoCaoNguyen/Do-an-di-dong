@@ -3,6 +3,7 @@ package com.doan.social.view
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
@@ -24,6 +25,7 @@ import kotlin.collections.emptyList
 
 class ProfileActivity : AppCompatActivity(), PostProfileAdapter.OnClickPostItem {
     private lateinit var img_setting_profile: ImageView
+    private lateinit var imgbtn_createPost: ImageButton
     private lateinit var txt_userName: TextView
     private lateinit var txt_userGender: TextView
     private lateinit var txt_userPhone: TextView
@@ -52,6 +54,7 @@ class ProfileActivity : AppCompatActivity(), PostProfileAdapter.OnClickPostItem 
         txt_userBirthday =  findViewById(R.id.txt_birthday)
         rcv_postProfile = findViewById(R.id.rcv_postProfile)
         img_setting_profile = findViewById(R.id.img_setting_profile)
+        imgbtn_createPost = findViewById(R.id.imgbtn_createPost)
 
         val userdata = getSharedPreferences("user_data", MODE_PRIVATE)
         val accessToken = userdata.getString("accessToken", "")
@@ -68,7 +71,10 @@ class ProfileActivity : AppCompatActivity(), PostProfileAdapter.OnClickPostItem 
             rcv_postProfile.adapter = PostProfileAdapter(listPost,this@ProfileActivity)
         }
 
-
+        imgbtn_createPost.setOnClickListener {
+            val intent = Intent(this, PostCreateActivity::class.java)
+            startActivity(intent)
+        }
 
         img_setting_profile.setOnClickListener {
             val intent = Intent(this, SettingProfileActivity::class.java)

@@ -59,4 +59,11 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.2")
+
+    //Dùng cho block code (Snippet)
+//    implementation("io.noties.markwon:core:4.6.2")
+//    implementation("io.noties.markwon:syntax-highlight:4.6.2")
+//    implementation("io.noties.prism4j:prism4j:2.0.0")
+//    implementation("io.noties.prism4j:prism4j-bundler:2.0.0")
+
 }
