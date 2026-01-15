@@ -28,7 +28,7 @@ class ProfileActivity : AppCompatActivity(), PostProfileAdapter.OnClickPostItem 
     private lateinit var txt_userBirthday: TextView
     private lateinit var rcv_postProfile: RecyclerView
     private val client = OkHttpClient()
-    
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
