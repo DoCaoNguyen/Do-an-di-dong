@@ -3,7 +3,6 @@ package com.doan.social.view
 import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
@@ -16,20 +15,15 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.lifecycleScope
 import com.doan.social.R
 import com.doan.social.model.UserRequest
-import com.doan.social.model.User_model
 import com.doan.social.viewmodel.UserViewmodel
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.launch
-import okhttp3.OkHttpClient
 
 class LoginActivity : AppCompatActivity() {
 
     private lateinit var btnForgotNext: Button
     private lateinit var edtEmail: EditText
     private lateinit var edtPassword: EditText
-
-    private val client = OkHttpClient()
-
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -67,21 +61,16 @@ class LoginActivity : AppCompatActivity() {
         btnForgotNext = findViewById(R.id.btnForgotNext)
         edtEmail = findViewById(R.id.edtRegEmail)
         edtPassword = findViewById(R.id.edtRegPassword)
-        val userViewmodel: UserViewmodel = UserViewmodel(client)
+        val userViewmodel: UserViewmodel = UserViewmodel()
         var user: UserRequest
 
         btnForgotNext.setOnClickListener {
             lifecycleScope.launch {
                 user = UserRequest(edtEmail.text.toString(), edtPassword.text.toString())
-                val userData = userViewmodel.postLogin(user)
-                if (userData?.data?.accessToken!= null) {
+                val token = userViewmodel.postLogin(user)
+                if (token != null) {
                     val intent = Intent(this@LoginActivity, HomeActivity::class.java)
-                    intent.putExtra("accessToken", userData?.data?.accessToken)
-                    intent.putExtra("username", userData?.data?.user?.username.toString())
-                    intent.putExtra("gender", userData?.data?.user?.gender.toString())
-                    intent.putExtra("phone", userData?.data?.user?.phone.toString())
-                    intent.putExtra("birthday", userData?.data?.user?.birthday.toString())
-                    intent.putExtra("id", userData?.data?.user?.id)
+                    intent.putExtra("token", token)
                     startActivity(intent)
                 } else {
                     Toast.makeText(this@LoginActivity, "Đăng Nhập Thất Bại", Toast.LENGTH_SHORT)
