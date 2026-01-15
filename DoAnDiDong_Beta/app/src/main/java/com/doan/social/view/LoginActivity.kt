@@ -21,6 +21,7 @@ import com.doan.social.viewmodel.UserViewmodel
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.launch
 import okhttp3.OkHttpClient
+import androidx.core.content.edit
 
 class LoginActivity : AppCompatActivity() {
 
@@ -60,7 +61,7 @@ class LoginActivity : AppCompatActivity() {
 
         //Đăng nhập
         findViewById<Button>(R.id.btnForgotNext).setOnClickListener {
-            pref.edit().putBoolean("onboarding_done", true).apply()
+            pref.edit { putBoolean("onboarding_done", true) }
             startActivity(Intent(this, HomeActivity::class.java))
         }
 
@@ -74,14 +75,15 @@ class LoginActivity : AppCompatActivity() {
             lifecycleScope.launch {
                 user = UserRequest(edtEmail.text.toString(), edtPassword.text.toString())
                 val userData = userViewmodel.postLogin(user)
+                val userdata = getSharedPreferences("user_data", MODE_PRIVATE)
                 if (userData?.data?.accessToken!= null) {
-                    val intent = Intent(this@LoginActivity, HomeActivity::class.java)
-                    intent.putExtra("accessToken", userData?.data?.accessToken)
-                    intent.putExtra("username", userData?.data?.user?.username.toString())
-                    intent.putExtra("gender", userData?.data?.user?.gender.toString())
-                    intent.putExtra("phone", userData?.data?.user?.phone.toString())
-                    intent.putExtra("birthday", userData?.data?.user?.birthday.toString())
-                    intent.putExtra("id", userData?.data?.user?.id)
+
+                    val intent = Intent(this@LoginActivity, HomeActivity::class.java).apply {
+                        userdata.edit {
+                            putString("accessToken", userData.data.accessToken)
+                                .putInt("userid", userData.data.user.id)
+                        }
+                    }
                     startActivity(intent)
                 } else {
                     Toast.makeText(this@LoginActivity, "Đăng Nhập Thất Bại", Toast.LENGTH_SHORT)

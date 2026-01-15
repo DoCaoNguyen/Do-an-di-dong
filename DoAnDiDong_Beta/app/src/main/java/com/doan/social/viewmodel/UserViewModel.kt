@@ -4,6 +4,7 @@ import android.R.attr.data
 import android.util.Log
 import com.doan.social.model.Post
 import com.doan.social.model.PostProfileRequest
+import com.doan.social.model.UserData
 import com.doan.social.model.UserRequest
 import com.doan.social.model.User_model
 import kotlinx.coroutines.Dispatchers
@@ -52,12 +53,43 @@ class UserViewmodel (private val client: OkHttpClient,
             throw  Exception("Lỗi đăng nhập: ${e.message}")
         }
     }
+    suspend fun getUserProfile(token: String?): UserData {
+        val baseUrl = "http://10.0.2.2:3000/api/users/profile"
+        var user: UserData = UserData(0,"","","","","","","","", emptyList())
+        return withContext(Dispatchers.IO){
+            try {
+                val request = Request.Builder()
+                    .url(baseUrl)
+                    .header("Authorization", "Bearer $token")
+                    .get()
+                    .build()
+                val response = client.newCall(request).execute()
+                response.use { res ->
+                    val bodyString = res.body?.string() ?: ""
+                    if (res.isSuccessful){
+                        val element = json.parseToJsonElement(bodyString)
+                        val temp = element.jsonObject["data"]?.jsonObject
+                        user = json.decodeFromJsonElement<UserData>(temp!!)
+                        Log.d("user",user.toString())
+                    } else {
+                        Log.e("API_ERROR", "Status Code: ${res.code}")
+                    }
+                }
+            } catch (e: Throwable){
+                throw Exception("Lỗi đăng nhập: ${e.message}")
+            }
+            user
+        }
+    }
+
+
+
 
 
     suspend fun getPostProfile(userid: Int?): MutableList<Post> {
         var postList = mutableListOf<Post>()
         val baseUrl = "http://10.0.2.2:3000/api/posts"
-        val client = OkHttpClient()
+
         return withContext(Dispatchers.IO) {
             try {
                 val request = Request.Builder()

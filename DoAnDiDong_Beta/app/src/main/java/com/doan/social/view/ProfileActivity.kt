@@ -15,10 +15,12 @@ import androidx.recyclerview.widget.RecyclerView
 import com.doan.social.R
 import com.doan.social.adapter.PostProfileAdapter
 import com.doan.social.model.Post
+import com.doan.social.model.UserData
 import com.doan.social.viewmodel.UserViewmodel
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.coroutines.launch
 import okhttp3.OkHttpClient
+import kotlin.collections.emptyList
 
 class ProfileActivity : AppCompatActivity(), PostProfileAdapter.OnClickPostItem {
     private lateinit var img_setting_profile: ImageView
@@ -28,6 +30,12 @@ class ProfileActivity : AppCompatActivity(), PostProfileAdapter.OnClickPostItem 
     private lateinit var txt_userBirthday: TextView
     private lateinit var rcv_postProfile: RecyclerView
     private val client = OkHttpClient()
+
+    val postView = UserViewmodel(client)
+    var listPost: MutableList<Post> = mutableListOf<Post>()
+
+    var user: UserData = UserData(0,"","","","","","","","",emptyList())
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,24 +53,26 @@ class ProfileActivity : AppCompatActivity(), PostProfileAdapter.OnClickPostItem 
         rcv_postProfile = findViewById(R.id.rcv_postProfile)
         img_setting_profile = findViewById(R.id.img_setting_profile)
 
-        txt_userName.setText(intent.getStringExtra("username"))
-        txt_userGender.setText(intent.getStringExtra("gender"))
-        txt_userPhone.setText(intent.getStringExtra("phone"))
-        txt_userBirthday.setText(intent.getStringExtra("birthday"))
+        val userdata = getSharedPreferences("user_data", MODE_PRIVATE)
+        val accessToken = userdata.getString("accessToken", "")
+        val userId = userdata.getInt("userid",0)
+
+        lifecycleScope.launch {
+            user = postView.getUserProfile(accessToken)
+            txt_userName.setText(user.username)
+            txt_userGender.setText(user.gender)
+            txt_userPhone.setText(user.phone)
+            txt_userBirthday.setText(user.birthday)
+            listPost =  postView.getPostProfile(userId)
+            rcv_postProfile.layoutManager = LinearLayoutManager(this@ProfileActivity)
+            rcv_postProfile.adapter = PostProfileAdapter(listPost,this@ProfileActivity)
+        }
+
+
 
         img_setting_profile.setOnClickListener {
             val intent = Intent(this, SettingProfileActivity::class.java)
             startActivity(intent)
-        }
-
-        val userId = intent.getIntExtra("id",0)
-        val postView = UserViewmodel(client)
-        var listPost: MutableList<Post> = mutableListOf<Post>()
-
-        lifecycleScope.launch {
-            listPost =  postView.getPostProfile(userId)
-            rcv_postProfile.layoutManager = LinearLayoutManager(this@ProfileActivity)
-            rcv_postProfile.adapter = PostProfileAdapter(listPost,this@ProfileActivity)
         }
 
         val botNav = findViewById<BottomNavigationView>(R.id.btnNavi)
