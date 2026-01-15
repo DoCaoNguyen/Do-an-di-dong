@@ -53,41 +53,45 @@ class UserViewmodel (private val client: OkHttpClient,
         }
     }
 
-    suspend fun getPostProfile(userid: Int?): MutableList<Post>{
 
-        val postList = mutableListOf<Post>()
-        val url = "http://10.0.2.2:3000/api/posts"
-
-        return withContext(Dispatchers.IO){
+    suspend fun getPostProfile(userid: Int?): MutableList<Post> {
+        var postList = mutableListOf<Post>()
+        val baseUrl = "http://10.0.2.2:3000/api/posts"
+        val client = OkHttpClient()
+        return withContext(Dispatchers.IO) {
             try {
+                val request = Request.Builder()
+                    .url(baseUrl)
+                    .get()
+                    .build()
 
+                val response = client.newCall(request).execute()
 
-        val request = Request.Builder()
-            .url(url)
-            .get()
-            .build()
+                response.use { res ->
+                    val bodyString = res.body?.string() ?: ""
+                    Log.d("data", bodyString)
 
-        client.newCall(request).execute().use { response ->
-            if (!response.isSuccessful) {
-                throw Exception("HTTP ${response.code}: ${response.message}")
-            }
+                    if (res.isSuccessful) {
+                        val json = Json { ignoreUnknownKeys = true }
+                        val element = json.parseToJsonElement(bodyString)
+                        val postsArray =
+                            element.jsonObject["data"]?.jsonObject?.get("posts")?.jsonArray
 
-            val bodyString = response.body?.string() ?: ""
-            val temp = json.parseToJsonElement(bodyString)
-            val array = temp.jsonObject["data"]?.jsonObject?.get("posts")?.jsonArray
-            if (array != null) {
-                val data = json.decodeFromJsonElement<List<Post>>(array)
-                Log.d("data","$data")
-                postList.addAll(data.filter { Post -> Post.users_id == userid })
-            }else{
-            throw Exception("Lỗi đăng nhập: ${response.message}")
+                        if (postsArray != null) {
+                            val data = json.decodeFromJsonElement<List<Post>>(postsArray)
+                            postList.addAll(data)
+                            postList =
+                                postList.filter { it.users_id == userid } as MutableList<Post>
+                            Log.d("postList",postList.toString())
+                        }
+                    } else {
+                        Log.e("API_ERROR", "Status Code: ${response.code}")
+                    }
                 }
-        }
-
-        }catch (e: Exception) {
-            throw  Exception("Lỗi đăng nhập: ${e.message}")
+            } catch (e: Exception) {
+                Log.e("NETWORK_ERROR", e.message ?: "Unknown error")
             }
-        postList
+            postList
         }
     }
 }

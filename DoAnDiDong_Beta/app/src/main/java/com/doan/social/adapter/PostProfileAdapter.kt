@@ -15,7 +15,7 @@ class PostProfileAdapter(private val postList: MutableList<Post>, private val li
         parent: ViewGroup,
         viewType: Int
     ): PostViewHolder {
-        val itemView = LayoutInflater.from(parent.context).inflate(R.layout.post_layout_profile, parent, false)
+        val itemView = LayoutInflater.from(parent.context).inflate(R.layout.post_layout, parent, false)
         return PostViewHolder(itemView)
 
     }
@@ -25,25 +25,30 @@ class PostProfileAdapter(private val postList: MutableList<Post>, private val li
         position: Int
     ) {
         val item = postList[position]
-        holder.txt_titlePost.setText(item.title)
-        holder.txt_statusPost.setText("Status: "+item.status)
-        holder.txt_bodyPost.setText(item.content)
-        Glide.with(holder.itemView.context) //Load ảnh
-            .load(item.image_url)
-            .into(holder.imgv_post)
+        holder.txtTitle.text = item.title
+        holder.txtContent.text = item.content
+        holder.txtName.text = item.user?.username
+        if (item.user?.imgUrl != null) {
+            Glide.with(holder.itemView.context)
+                .load(item.user.imgUrl)
+                .into(holder.imgProfile)
+        } else {
+            Glide.with(holder.itemView.context)
+                .load(R.drawable.avartar_profile)
+                .into(holder.imgProfile)
+        }
         holder.itemView.setOnClickListener {
-            listener.onClickPostItem(position)
+            listener.onClickPostItem(item.id)
         }
     }
 
     override fun getItemCount(): Int = postList.size
 
     class PostViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val txt_titlePost = itemView.findViewById<TextView>(R.id.txt_titlePost)
-        val imgv_post = itemView.findViewById<ImageView>(R.id.imgv_post)
-        val txt_bodyPost = itemView.findViewById<TextView>(R.id.txt_bodyPost)
-        val txt_statusPost = itemView.findViewById<TextView>(R.id.txt_statusPost)
-
+        var txtTitle = itemView.findViewById<TextView>(R.id.txtTitle)
+        var txtContent = itemView.findViewById<TextView>(R.id.txtContent)
+        var txtName = itemView.findViewById<TextView>(R.id.txtName)
+        var imgProfile = itemView.findViewById<ImageView>(R.id.imgProfile)
     }
 
     interface OnClickPostItem{
