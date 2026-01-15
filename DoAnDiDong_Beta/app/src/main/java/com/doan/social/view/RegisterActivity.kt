@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.widget.Button
 import android.widget.DatePicker
 import android.widget.EditText
+import android.widget.ImageButton
 import androidx.activity.SystemBarStyle
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -46,6 +47,10 @@ class RegisterActivity : AppCompatActivity() {
 
             finish()
         }
+        findViewById<ImageButton>(R.id.imgbtnBack2).setOnClickListener {
+            finish()
+        }
+
 
     }
 }
