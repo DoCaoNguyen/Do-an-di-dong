@@ -2,6 +2,7 @@ package com.doan.social.view
 
 import android.content.Intent
 import android.os.Bundle
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
@@ -28,6 +29,7 @@ class ProfileActivity : AppCompatActivity(), ProfileAdapter.OnClickPostItem {
     private lateinit var txt_userPhone: TextView
     private lateinit var txt_userBirthday: TextView
     private lateinit var rcv_postProfile: RecyclerView
+    private lateinit var btn_postCreate: Button
     private val client = OkHttpClient()
 
     val postView = UserViewmodel(client)
@@ -51,6 +53,13 @@ class ProfileActivity : AppCompatActivity(), ProfileAdapter.OnClickPostItem {
         txt_userBirthday =  findViewById(R.id.txt_birthday)
         rcv_postProfile = findViewById(R.id.rcv_postProfile)
         img_setting_profile = findViewById(R.id.img_setting_profile)
+        btn_postCreate = findViewById(R.id.btn_postCreate)
+
+        btn_postCreate.setOnClickListener {
+            val intent = Intent(this, PostCreateActivity::class.java)
+            startActivity(intent)
+        }
+
 
         val userdata = getSharedPreferences("user_data", MODE_PRIVATE)
         val accessToken = userdata.getString("accessToken", "")

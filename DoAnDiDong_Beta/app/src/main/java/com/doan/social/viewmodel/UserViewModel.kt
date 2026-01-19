@@ -86,7 +86,7 @@ class UserViewmodel (private val client: OkHttpClient,
 
     suspend fun getPostProfile(userid: Int?): MutableList<Post> {
         var postList = mutableListOf<Post>()
-        val baseUrl = "http://10.0.2.2:3000/api/posts"
+        val baseUrl = "http://10.0.2.2:3000/api/posts" //Cần sửa API lại để gọi theo ID user trả về từ client
 
         return withContext(Dispatchers.IO) {
             try {

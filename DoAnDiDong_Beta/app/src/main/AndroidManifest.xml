@@ -12,6 +12,10 @@
         android:supportsRtl="true"
         android:usesCleartextTraffic="true"
         android:theme="@style/Theme.Social">
+
+        <activity
+            android:name=".view.PostCreateActivity"
+            android:exported="false" />
         <activity
             android:name=".view.PostDetailActivity"
             android:exported="false" />
