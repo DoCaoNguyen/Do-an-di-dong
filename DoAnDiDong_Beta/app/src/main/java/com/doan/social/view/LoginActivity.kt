@@ -1,6 +1,5 @@
 package com.doan.social.view
 
-import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -16,9 +15,7 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.lifecycleScope
 import com.doan.social.R
 import com.doan.social.model.UserRequest
-import com.doan.social.model.User_model
 import com.doan.social.viewmodel.UserViewmodel
-import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.launch
 import okhttp3.OkHttpClient
 import androidx.core.content.edit
@@ -44,7 +41,7 @@ class LoginActivity : AppCompatActivity() {
             insets
         }
 
-        val pref = getSharedPreferences("onboarding_done", MODE_PRIVATE)
+
 
         //Chưa có tài khoản -> Đăng ký
         findViewById<TextView>(R.id.btnRegLogin).setOnClickListener {
@@ -59,19 +56,16 @@ class LoginActivity : AppCompatActivity() {
             startActivity(Intent(this, ForgotPasswordActivity::class.java))
         }
 
-        //Đăng nhập
-        findViewById<Button>(R.id.btnForgotNext).setOnClickListener {
-            pref.edit { putBoolean("onboarding_done", true) }
-            startActivity(Intent(this, HomeActivity::class.java))
-        }
 
-        btnForgotNext = findViewById(R.id.btnForgotNext)
+        //Đăng nhập
+        val onboardprefs = getSharedPreferences("onboarding_done", MODE_PRIVATE)
         edtEmail = findViewById(R.id.edtRegEmail)
         edtPassword = findViewById(R.id.edtRegPassword)
         val userViewmodel: UserViewmodel = UserViewmodel(client)
         var user: UserRequest
-
-        btnForgotNext.setOnClickListener {
+        findViewById<Button>(R.id.btnLogin).setOnClickListener {
+            onboardprefs.edit { putBoolean("onboarding_done", true) }
+            Log.d("onboard", onboardprefs.getBoolean("onboarding_done",false).toString())
             lifecycleScope.launch {
                 user = UserRequest(edtEmail.text.toString(), edtPassword.text.toString())
                 val userData = userViewmodel.postLogin(user)

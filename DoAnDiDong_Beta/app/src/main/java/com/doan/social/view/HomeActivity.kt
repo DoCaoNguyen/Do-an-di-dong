@@ -2,7 +2,6 @@ package com.doan.social.view
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -36,7 +35,13 @@ class HomeActivity : AppCompatActivity() {
         lifecycleScope.launch {
             postList = homeViewModel.getPost()
             rcv_home.layoutManager = LinearLayoutManager(this@HomeActivity)
-            rcv_home.adapter = HomeAdapter(postList)
+            rcv_home.adapter = HomeAdapter(postList, object : HomeAdapter.OnClickPostItem {
+                override fun onClickPostItem(post: Int) {
+                    val intent = Intent(this@HomeActivity, PostDetailActivity::class.java)
+                    intent.putExtra("post", post)
+                    startActivity(intent)
+                }
+            })
         }
 
 

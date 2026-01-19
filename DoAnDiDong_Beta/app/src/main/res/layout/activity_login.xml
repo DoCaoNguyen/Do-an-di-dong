@@ -66,7 +66,7 @@
         app:layout_constraintTop_toBottomOf="@+id/edtRegEmail" />
 
     <Button
-        android:id="@+id/btnForgotNext"
+        android:id="@+id/btnLogin"
         android:layout_width="320dp"
         android:layout_height="50dp"
         android:layout_marginTop="92dp"
@@ -86,7 +86,7 @@
         android:text="Chưa có tài khoản?"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnForgotNext" />
+        app:layout_constraintTop_toBottomOf="@+id/btnLogin" />
 
     <TextView
         android:id="@+id/btnForgotPassword"

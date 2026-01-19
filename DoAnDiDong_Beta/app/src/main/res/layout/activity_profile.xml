@@ -226,16 +226,16 @@
             app:layout_constraintStart_toEndOf="@+id/textView15"
             app:layout_constraintTop_toTopOf="@+id/textView15" />
 
-        <ImageButton
-            android:id="@+id/imgbtn_createPost"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:layout_marginEnd="33dp"
-            app:layout_constraintBottom_toBottomOf="@+id/textView12"
+        <Button
+            android:id="@+id/btn_postCreate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="Button"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/textView16"
-            app:srcCompat="@drawable/create_post" />
-
+            app:layout_constraintHorizontal_bias="0.862"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <ImageView

@@ -2,6 +2,7 @@ package com.doan.social.view
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.SystemBarStyle
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -24,8 +25,9 @@ class MainActivity : AppCompatActivity() {
             insets
         }
 
-        val pref = getSharedPreferences("onboarding_done", MODE_PRIVATE)
-        if (!pref.getBoolean("onboarding_done",false)) {
+        val onboardprefs = getSharedPreferences("onboarding_done", MODE_PRIVATE)
+        Log.d("onboard", onboardprefs.getBoolean("onboarding_done",false).toString())
+        if (!onboardprefs.getBoolean("onboarding_done",false)) {
             startActivity(Intent(this, OnBoardingActivity::class.java))
         } else {
             startActivity(Intent(this, HomeActivity::class.java))

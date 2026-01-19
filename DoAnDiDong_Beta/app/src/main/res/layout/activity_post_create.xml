@@ -37,13 +37,13 @@
     <EditText
         android:id="@+id/edt_titleCreatePost"
         android:layout_width="match_parent"
-        android:layout_height="40dp"
+        android:layout_height="48dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
+        android:background="@drawable/code_bg"
         android:ems="10"
         android:inputType="text"
-        android:background="@drawable/code_bg"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/txt_titleCreatePost" />
@@ -105,20 +105,19 @@
         <EditText
             android:id="@+id/editTextText"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:inputType="text"
+            android:layout_height="48dp"
             android:background="@drawable/code_bg"
-            android:padding="8dp"
+            android:ems="10"
             android:hint="block snippet code"
+            android:inputType="text"
+            android:padding="8dp"
             android:textSize="14sp"
-            android:typeface="monospace"/>
+            android:typeface="monospace" />
 
         <EditText
             android:id="@+id/editTextText2"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_gravity="top"
             android:layout_marginTop="10dp"
             android:background="@android:color/transparent"
             android:ems="10"
@@ -132,27 +131,73 @@
     <ImageButton
         android:id="@+id/imgbtn_backCratePost"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="48dp"
+        android:background="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.098"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.98"
-        app:srcCompat="@drawable/img_back"
-        android:background="@color/white"
-        />
+        app:srcCompat="@drawable/img_back" />
 
     <Button
         android:id="@+id/btn_submitCreatePost"
         android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="150dp"
+        android:layout_marginTop="32dp"
         android:layout_marginEnd="16dp"
         android:text="Đăng bài viết"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/edt_Tag" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Add tags"
+        tools:ignore="MissingConstraints">
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.chip.ChipGroup
+        android:id="@+id/chipGroupTags"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:singleLine="false"
+        app:chipSpacing="8dp"
+        tools:ignore="MissingConstraints" />
+
+    <AutoCompleteTextView
+        android:id="@+id/edt_Tag"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="10dp"
+        android:background="@drawable/code_bg"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txt_tag"
+        tools:ignore="MissingConstraints" />
+
+    <TextView
+        android:id="@+id/txt_tag"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="36dp"
+        android:layout_marginEnd="337dp"
+        android:text="Tag"
+        android:textColor="@color/black"
+        android:textSize="20dp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

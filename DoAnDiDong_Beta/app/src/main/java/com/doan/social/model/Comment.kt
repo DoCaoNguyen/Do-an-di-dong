@@ -1,13 +1,14 @@
 package com.doan.social.model
+
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class Post(
+data class Comment(
     val id: Int,
     val title: String?,
     val users_id: Int,
     val content: String?,
-    val image_url: String?,
+    val image_url: String,
     val status: String,
     val user: UserPost?,
 )

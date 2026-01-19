@@ -1,9 +1,7 @@
 package com.doan.social.viewmodel
 
-import android.R.attr.data
 import android.util.Log
 import com.doan.social.model.Post
-import com.doan.social.model.PostProfileRequest
 import com.doan.social.model.UserData
 import com.doan.social.model.UserRequest
 import com.doan.social.model.User_model
@@ -88,7 +86,7 @@ class UserViewmodel (private val client: OkHttpClient,
 
     suspend fun getPostProfile(userid: Int?): MutableList<Post> {
         var postList = mutableListOf<Post>()
-        val baseUrl = "http://10.0.2.2:3000/api/posts"
+        val baseUrl = "http://10.0.2.2:3000/api/posts" //Cần sửa API lại để gọi theo ID user trả về từ client
 
         return withContext(Dispatchers.IO) {
             try {

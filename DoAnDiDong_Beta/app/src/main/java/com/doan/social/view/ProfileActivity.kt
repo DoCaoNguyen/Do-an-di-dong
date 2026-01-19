@@ -2,8 +2,7 @@ package com.doan.social.view
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
-import android.widget.ImageButton
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
@@ -14,7 +13,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.doan.social.R
-import com.doan.social.adapter.PostProfileAdapter
+import com.doan.social.adapter.ProfileAdapter
 import com.doan.social.model.Post
 import com.doan.social.model.UserData
 import com.doan.social.viewmodel.UserViewmodel
@@ -23,18 +22,18 @@ import kotlinx.coroutines.launch
 import okhttp3.OkHttpClient
 import kotlin.collections.emptyList
 
-class ProfileActivity : AppCompatActivity(), PostProfileAdapter.OnClickPostItem {
+class ProfileActivity : AppCompatActivity(), ProfileAdapter.OnClickPostItem {
     private lateinit var img_setting_profile: ImageView
-    private lateinit var imgbtn_createPost: ImageButton
     private lateinit var txt_userName: TextView
     private lateinit var txt_userGender: TextView
     private lateinit var txt_userPhone: TextView
     private lateinit var txt_userBirthday: TextView
     private lateinit var rcv_postProfile: RecyclerView
+    private lateinit var btn_postCreate: Button
     private val client = OkHttpClient()
 
     val postView = UserViewmodel(client)
-    var listPost: MutableList<Post> = mutableListOf<Post>()
+    var listPosts: MutableList<Post> = mutableListOf<Post>()
 
     var user: UserData = UserData(0,"","","","","","","","",emptyList())
 
@@ -54,7 +53,13 @@ class ProfileActivity : AppCompatActivity(), PostProfileAdapter.OnClickPostItem 
         txt_userBirthday =  findViewById(R.id.txt_birthday)
         rcv_postProfile = findViewById(R.id.rcv_postProfile)
         img_setting_profile = findViewById(R.id.img_setting_profile)
-        imgbtn_createPost = findViewById(R.id.imgbtn_createPost)
+        btn_postCreate = findViewById(R.id.btn_postCreate)
+
+        btn_postCreate.setOnClickListener {
+            val intent = Intent(this, PostCreateActivity::class.java)
+            startActivity(intent)
+        }
+
 
         val userdata = getSharedPreferences("user_data", MODE_PRIVATE)
         val accessToken = userdata.getString("accessToken", "")
@@ -66,14 +71,9 @@ class ProfileActivity : AppCompatActivity(), PostProfileAdapter.OnClickPostItem 
             txt_userGender.setText(user.gender)
             txt_userPhone.setText(user.phone)
             txt_userBirthday.setText(user.birthday)
-            listPost =  postView.getPostProfile(userId)
+            listPosts =  postView.getPostProfile(userId)
             rcv_postProfile.layoutManager = LinearLayoutManager(this@ProfileActivity)
-            rcv_postProfile.adapter = PostProfileAdapter(listPost,this@ProfileActivity)
-        }
-
-        imgbtn_createPost.setOnClickListener {
-            val intent = Intent(this, PostCreateActivity::class.java)
-            startActivity(intent)
+            rcv_postProfile.adapter = ProfileAdapter(listPosts,this@ProfileActivity)
         }
 
         img_setting_profile.setOnClickListener {
