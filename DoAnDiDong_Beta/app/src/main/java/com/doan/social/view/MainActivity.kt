@@ -24,12 +24,13 @@ class MainActivity : AppCompatActivity() {
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             insets
         }
+        //Kiểm tra đã đăng nhập hay chưa LOGOUT
 
         val onboardprefs = getSharedPreferences("onboarding_done", MODE_PRIVATE)
-        Log.d("onboard", onboardprefs.getBoolean("onboarding_done",false).toString())
+
         if (!onboardprefs.getBoolean("onboarding_done",false)) {
             startActivity(Intent(this, OnBoardingActivity::class.java))
-        } else {
+        }else {
             startActivity(Intent(this, HomeActivity::class.java))
         }
 

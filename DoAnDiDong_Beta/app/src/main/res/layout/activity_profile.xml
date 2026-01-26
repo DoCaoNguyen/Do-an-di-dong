@@ -73,14 +73,13 @@
 
         <xyz.schwaab.avvylib.AvatarView
 
-            android:id="@+id/avatarView"
+            android:id="@+id/avtV_user"
             android:layout_width="102dp"
             android:layout_height="94dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="40dp"
             android:src="@drawable/avartar_profile"
-            app:avvy_border_highlight_color="#ff5900"
-            app:avvy_border_highlight_color_end="#bf15bc"
+            app:avvy_border_highlight_color="#8080"
             app:avvy_border_thickness="2dp"
             app:avvy_border_thickness_highlight="3dp"
             app:avvy_distance_to_border="5dp"
@@ -106,13 +105,13 @@
             android:id="@+id/txt_userName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:text="USERNAME"
             android:textSize="20dp"
             android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/avatarView" />
+            app:layout_constraintEnd_toEndOf="@+id/avtV_user"
+            app:layout_constraintStart_toStartOf="@+id/avtV_user"
+            app:layout_constraintTop_toBottomOf="@+id/avtV_user" />
 
         <TextView
             android:id="@+id/textView3"
@@ -120,7 +119,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginTop="24dp"
-            android:text="Gender: "
+            android:text="Giới Tính: "
             android:textSize="18dp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
@@ -131,7 +130,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="116dp"
-            android:text="Phone: "
+            android:text="Điện Thoại: "
             android:textSize="18dp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="@+id/textView3"
@@ -144,7 +143,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginTop="24dp"
-            android:text="BirthDay:"
+            android:text="Ngày Sinh:"
             android:textSize="18dp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
@@ -190,41 +189,39 @@
             android:layout_marginStart="24dp"
             android:text="Following"
             app:layout_constraintBottom_toBottomOf="@+id/textView13"
-            app:layout_constraintEnd_toEndOf="@+id/textView16"
-            app:layout_constraintStart_toEndOf="@+id/textView13" />
+            app:layout_constraintStart_toEndOf="@+id/textView13"
+            app:layout_constraintTop_toTopOf="@+id/textView13" />
 
         <TextView
             android:id="@+id/textView13"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
+            android:layout_marginStart="16dp"
             android:text="Followers"
-            app:layout_constraintBottom_toBottomOf="@+id/avatarView"
-            app:layout_constraintEnd_toEndOf="@+id/textView15"
-            app:layout_constraintStart_toEndOf="@+id/avatarView" />
+            app:layout_constraintBottom_toBottomOf="@+id/avtV_user"
+            app:layout_constraintStart_toEndOf="@+id/avtV_user" />
 
         <TextView
-            android:id="@+id/textView15"
+            android:id="@+id/txt_follower"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
             android:layout_marginBottom="10dp"
             android:text="TextView"
             android:textStyle="bold"
             app:layout_constraintBottom_toTopOf="@+id/textView13"
-            app:layout_constraintStart_toEndOf="@+id/avatarView" />
+            app:layout_constraintEnd_toEndOf="@+id/textView13"
+            app:layout_constraintStart_toStartOf="@+id/textView13" />
 
         <TextView
-            android:id="@+id/textView16"
+            android:id="@+id/txt_following"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="24dp"
-            android:layout_marginBottom="10dp"
             android:text="TextView"
             android:textStyle="bold"
-            app:layout_constraintBottom_toTopOf="@+id/textView12"
-            app:layout_constraintStart_toEndOf="@+id/textView15"
-            app:layout_constraintTop_toTopOf="@+id/textView15" />
+            app:layout_constraintBottom_toBottomOf="@+id/txt_follower"
+            app:layout_constraintEnd_toEndOf="@+id/textView12"
+            app:layout_constraintStart_toStartOf="@+id/textView12"
+            app:layout_constraintTop_toTopOf="@+id/txt_follower" />
 
         <Button
             android:id="@+id/btn_postCreate"

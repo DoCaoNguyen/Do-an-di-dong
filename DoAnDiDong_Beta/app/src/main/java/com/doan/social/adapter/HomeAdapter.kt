@@ -8,9 +8,9 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.doan.social.R
-import com.doan.social.model.Post
+import com.doan.social.model.PostModel
 
-class HomeAdapter(private val postList: MutableList<Post>, private val listener: OnClickPostItem) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class HomeAdapter(private val postList: MutableList<PostModel>, private val listener: OnClickPostItem) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private val VIEW_TYPE_APP_BAR = 0
     private val VIEW_TYPE_POST_BAR = 1
