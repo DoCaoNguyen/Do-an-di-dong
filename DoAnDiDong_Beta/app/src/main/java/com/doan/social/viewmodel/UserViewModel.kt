@@ -1,8 +1,8 @@
 package com.doan.social.viewmodel
 
 import android.util.Log
-import com.doan.social.model.Post
-import com.doan.social.model.UserData
+import com.doan.social.model.PostModel
+import com.doan.social.model.UserProfileModel
 import com.doan.social.model.UserRequest
 import com.doan.social.model.User_model
 import kotlinx.coroutines.Dispatchers
@@ -41,6 +41,7 @@ class UserViewmodel (private val client: OkHttpClient,
                 val body = response.body?.string() ?: ""
 
                 if (code in 200..299) {
+                    val json = Json { ignoreUnknownKeys = true }
                     val loginResponse = json.decodeFromString<User_model>(body)
                     return loginResponse
                 } else {
@@ -51,9 +52,9 @@ class UserViewmodel (private val client: OkHttpClient,
             throw  Exception("Lỗi đăng nhập: ${e.message}")
         }
     }
-    suspend fun getUserProfile(token: String?): UserData {
-        val baseUrl = "http://10.0.2.2:3000/api/users/profile"
-        var user: UserData = UserData(0,"","","","","","","","", emptyList())
+    suspend fun getUserProfile(token: String?): UserProfileModel {
+        val baseUrl = "http://10.0.2.2:3000/api/users/me"
+        var user: UserProfileModel = UserProfileModel(0,"","","","","","","","",0,0, emptyList())
         return withContext(Dispatchers.IO){
             try {
                 val request = Request.Builder()
@@ -67,7 +68,7 @@ class UserViewmodel (private val client: OkHttpClient,
                     if (res.isSuccessful){
                         val element = json.parseToJsonElement(bodyString)
                         val temp = element.jsonObject["data"]?.jsonObject
-                        user = json.decodeFromJsonElement<UserData>(temp!!)
+                        user = json.decodeFromJsonElement<UserProfileModel>(temp!!)
                         Log.d("user",user.toString())
                     } else {
                         Log.e("API_ERROR", "Status Code: ${res.code}")
@@ -80,13 +81,10 @@ class UserViewmodel (private val client: OkHttpClient,
         }
     }
 
+    suspend fun getPostProfile(userid: Int): MutableList<PostModel> {
+        var postList = mutableListOf<PostModel>()
 
-
-
-
-    suspend fun getPostProfile(userid: Int?): MutableList<Post> {
-        var postList = mutableListOf<Post>()
-        val baseUrl = "http://10.0.2.2:3000/api/posts" //Cần sửa API lại để gọi theo ID user trả về từ client
+        val baseUrl = "http://10.0.2.2:3000/api/posts/user/${userid}"
 
         return withContext(Dispatchers.IO) {
             try {
@@ -99,20 +97,17 @@ class UserViewmodel (private val client: OkHttpClient,
 
                 response.use { res ->
                     val bodyString = res.body?.string() ?: ""
-                    Log.d("data", bodyString)
 
                     if (res.isSuccessful) {
                         val json = Json { ignoreUnknownKeys = true }
                         val element = json.parseToJsonElement(bodyString)
                         val postsArray =
                             element.jsonObject["data"]?.jsonObject?.get("posts")?.jsonArray
+                        Log.d("postsArray",postsArray.toString())
 
                         if (postsArray != null) {
-                            val data = json.decodeFromJsonElement<List<Post>>(postsArray)
+                            val data = json.decodeFromJsonElement<List<PostModel>>(postsArray)
                             postList.addAll(data)
-                            postList =
-                                postList.filter { it.users_id == userid } as MutableList<Post>
-                            Log.d("postList",postList.toString())
                         }
                     } else {
                         Log.e("API_ERROR", "Status Code: ${response.code}")

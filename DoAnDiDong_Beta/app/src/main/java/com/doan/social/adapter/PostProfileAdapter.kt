@@ -8,9 +8,9 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.doan.social.R
-import com.doan.social.model.Post
+import com.doan.social.model.PostModel
 
-class ProfileAdapter(private val postList: MutableList<Post>, private val listener: OnClickPostItem) : RecyclerView.Adapter<ProfileAdapter.PostViewHolder>() {
+class PostProfileAdapter(private val postList: MutableList<PostModel>, private val listener: OnClickPostItem) : RecyclerView.Adapter<PostProfileAdapter.PostViewHolder>() {
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int

@@ -1,7 +1,7 @@
 package com.doan.social.viewmodel
 
 import android.util.Log
-import com.doan.social.model.Post
+import com.doan.social.model.PostModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import kotlinx.serialization.json.Json
@@ -14,8 +14,8 @@ import okhttp3.Request
 class HomeViewModel {
     private val baseUrl = "http://10.0.2.2:3000/api/posts"
     private val client = OkHttpClient()
-    suspend fun getPost(): MutableList<Post> {
-        val postList = mutableListOf<Post>()
+    suspend fun getPost(): MutableList<PostModel> {
+        val postList = mutableListOf<PostModel>()
         return withContext(Dispatchers.IO) {
             try {
                 val request = Request.Builder()
@@ -36,7 +36,7 @@ class HomeViewModel {
                             element.jsonObject["data"]?.jsonObject?.get("posts")?.jsonArray
 
                         if (postsArray != null) {
-                            val data = json.decodeFromJsonElement<List<Post>>(postsArray)
+                            val data = json.decodeFromJsonElement<List<PostModel>>(postsArray)
                             postList.addAll(data)
                         }
                     } else {
