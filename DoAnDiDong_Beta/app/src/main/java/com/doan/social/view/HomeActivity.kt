@@ -2,6 +2,7 @@ package com.doan.social.view
 
 import android.content.Intent
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -11,7 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.doan.social.R
 import com.doan.social.adapter.HomeAdapter
-import com.doan.social.model.Post
+import com.doan.social.model.PostModel
 import com.doan.social.viewmodel.HomeViewModel
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.coroutines.launch
@@ -19,7 +20,7 @@ import kotlinx.coroutines.launch
 class HomeActivity : AppCompatActivity() {
 
     private var homeViewModel = HomeViewModel()
-    private lateinit var postList: MutableList<Post>
+    private lateinit var postList: MutableList<PostModel>
     private lateinit var rcv_home: RecyclerView
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -43,7 +44,8 @@ class HomeActivity : AppCompatActivity() {
                 }
             })
         }
-
+        val userdata = getSharedPreferences("user_data", MODE_PRIVATE)
+        val accessToken = userdata.getString("accessToken", "")
 
 
         val botNav = findViewById<BottomNavigationView>(R.id.btnNavi)

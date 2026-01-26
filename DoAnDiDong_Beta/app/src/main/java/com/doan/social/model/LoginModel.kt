@@ -25,16 +25,9 @@ data class UserData(
     val username: String,
     val email: String,
     val role: String,
-    val avatarurl: String?, //null chưa upload
-    val gender: String?,//null chưa upload
-    val phone: String?,//null chưa upload
-    val birthday: String?,//null chưa upload
+    val avatarurl: String,
+    val gender: String,
+    val phone: String,
+    val birthday: String,
     val status: String,
-    val interests: List<String>
-)
-
-@Serializable
-data class UserPost(
-    val username: String?,
-    val avatarurl: String? = null
 )

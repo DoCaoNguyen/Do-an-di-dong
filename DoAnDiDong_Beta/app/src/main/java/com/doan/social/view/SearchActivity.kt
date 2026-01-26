@@ -13,11 +13,6 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 
 
 class SearchActivity : AppCompatActivity() {
-    private lateinit var img_home: ImageView
-    private lateinit var img_search: ImageView
-    private lateinit var img_notification: ImageView
-    private lateinit var img_user: ImageView
-    private lateinit var edt_search: EditText
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()

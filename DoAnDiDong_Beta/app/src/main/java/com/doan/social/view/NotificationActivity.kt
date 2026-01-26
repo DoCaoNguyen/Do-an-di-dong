@@ -12,10 +12,6 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class NotificationActivity : AppCompatActivity() {
 
-    private lateinit var img_home: ImageView
-    private lateinit var img_search: ImageView
-    private lateinit var img_notification: ImageView
-    private lateinit var img_user: ImageView
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
