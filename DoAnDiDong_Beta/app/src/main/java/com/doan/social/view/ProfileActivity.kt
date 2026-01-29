@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -20,6 +21,8 @@ import com.doan.social.model.UserProfileModel
 import com.doan.social.viewmodel.UserViewmodel
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.coroutines.launch
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
 import okhttp3.OkHttpClient
 import xyz.schwaab.avvylib.AvatarView
 import java.time.LocalDate
@@ -37,8 +40,18 @@ class ProfileActivity : AppCompatActivity(), PostProfileAdapter.OnClickPostItem 
     private lateinit var txt_followers: TextView
     private lateinit var txt_following: TextView
     private lateinit var rcv_postProfile: RecyclerView
-    private lateinit var btn_postCreate: Button
     private val client = OkHttpClient()
+
+    private fun saveUserToPrefs(user: UserProfileModel) {
+        val prefs = getSharedPreferences("user_profile", MODE_PRIVATE)
+        prefs.edit()
+            .putString("avatar", user.avatarurl)
+            .putString("username", user.username)
+            .putString("gender", user.gender)
+            .putString("phone", user.phone)
+            .putString("birthday", user.birthday)
+            .apply()
+    }
 
     val postView = UserViewmodel(client)
     var listPosts: MutableList<PostModel> = mutableListOf<PostModel>()
@@ -56,12 +69,14 @@ class ProfileActivity : AppCompatActivity(), PostProfileAdapter.OnClickPostItem 
         }
 
 
-    fun reloadProfile() {val userdata = getSharedPreferences("user_data", MODE_PRIVATE)
+    fun reloadProfile() {
+        val userdata = getSharedPreferences("user_data", MODE_PRIVATE)
         val accessToken = userdata.getString("accessToken", "")
         val userId = userdata.getInt("userid",0)
 
         lifecycleScope.launch {
             user = postView.getUserProfile(accessToken)
+            saveUserToPrefs(user)
             avtV_user.setAvatar(user.avatarurl)
             txt_userName.setText(user.username)
             txt_userGender.setText(user.gender)
@@ -92,12 +107,6 @@ class ProfileActivity : AppCompatActivity(), PostProfileAdapter.OnClickPostItem 
         txt_following =  findViewById(R.id.txt_following)
         rcv_postProfile = findViewById(R.id.rcv_postProfile)
         img_setting_profile = findViewById(R.id.img_setting_profile)
-        btn_postCreate = findViewById(R.id.btn_postCreate)
-
-        btn_postCreate.setOnClickListener {
-            val intent = Intent(this, PostCreateActivity::class.java)
-            startActivity(intent)
-        }
 
         reloadProfile()
 
@@ -106,11 +115,6 @@ class ProfileActivity : AppCompatActivity(), PostProfileAdapter.OnClickPostItem 
         img_setting_profile.setOnClickListener {
             val intent = Intent(this, SettingProfileActivity::class.java)
             intent.putExtra("accessToken",accessToken)
-            intent.putExtra("gender",user.gender)
-            intent.putExtra("phone",user.phone)
-            intent.putExtra("birthday",user.birthday)
-            intent.putExtra("avatar",user.avatarurl)
-            intent.putExtra("username",user.username)
             updateProfileLauncher.launch(intent)
         }
 
@@ -143,7 +147,19 @@ class ProfileActivity : AppCompatActivity(), PostProfileAdapter.OnClickPostItem 
     }
 
     override fun onClickPostItem(post: Int) {
-        TODO("Not yet implemented")
+        val selectedPost = listPosts.find { postItem ->
+            postItem.id == post
+        }
+
+        if (selectedPost != null) {
+            val postJson = Json.encodeToString(selectedPost)
+
+            val intent = Intent(this, PostDetailActivity::class.java)
+            intent.putExtra("post_data", postJson)
+            startActivity(intent)
+        } else {
+            Toast.makeText(this, "Không tìm thấy bài viết", Toast.LENGTH_SHORT).show()
+        }
     }
 
     fun AvatarView.setAvatar(url: String?) {

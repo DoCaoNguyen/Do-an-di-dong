@@ -72,7 +72,7 @@ class UserViewmodel (private val client: OkHttpClient,
                         user = json.decodeFromJsonElement<UserProfileModel>(temp!!)
                         Log.d("user",user.toString())
                     } else {
-                        Log.e("API_ERROR", "Status Code: ${res.code}")
+                        Log.e("dataProfile", "Status Code: ${res.code}")
                     }
                 }
             } catch (e: Throwable){
@@ -111,11 +111,11 @@ class UserViewmodel (private val client: OkHttpClient,
                             postList.addAll(data)
                         }
                     } else {
-                        Log.e("API_ERROR", "Status Code: ${response.code}")
+                        Log.e("postProfile", "Status Code: ${response.code}")
                     }
                 }
             } catch (e: Exception) {
-                Log.e("NETWORK_ERROR", e.message ?: "Unknown error")
+                Log.e("postProfile", e.message ?: "Unknown error")
             }
             postList
         }

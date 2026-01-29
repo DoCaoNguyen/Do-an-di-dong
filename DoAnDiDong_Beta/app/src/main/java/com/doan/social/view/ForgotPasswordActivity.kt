@@ -23,6 +23,7 @@ class ForgotPasswordActivity : AppCompatActivity() {
         enableEdgeToEdge()
         setContentView(R.layout.activity_forgot_password)
 
+<<<<<<< HEAD
         val btnContinue = findViewById<Button>(R.id.btnForgotContinue)
         val edtEmail = findViewById<EditText>(R.id.txtForgotEmail)
         val layoutResetDetails = findViewById<LinearLayout>(R.id.layoutResetDetails)
@@ -32,6 +33,10 @@ class ForgotPasswordActivity : AppCompatActivity() {
         val txtTimer = TextView(this).apply {
             textAlignment = View.TEXT_ALIGNMENT_CENTER
             setPadding(0, 20, 0, 0)
+=======
+        findViewById<Button>(R.id.btn_Login).setOnClickListener {
+            val email = findViewById<EditText>(R.id.txtForgotEmail).text
+>>>>>>> 9b678474de3189cfeb55ceec1136ea8955777c11
         }
         layoutResetDetails.addView(txtTimer)
 

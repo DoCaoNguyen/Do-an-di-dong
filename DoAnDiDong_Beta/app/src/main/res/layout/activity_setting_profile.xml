@@ -85,6 +85,7 @@
         android:ems="10"
         android:hint="Số điện thoại"
         android:inputType="phone"
+        android:maxLength="10"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/edt_birthday" />
@@ -100,27 +101,6 @@
         app:layout_constraintEnd_toEndOf="@+id/frameLayout"
         app:layout_constraintStart_toStartOf="@+id/frameLayout"
         app:layout_constraintTop_toBottomOf="@+id/frameLayout" />
-
-    <RadioButton
-        android:id="@+id/rdb_nu"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:text="Nữ"
-        app:layout_constraintBottom_toBottomOf="@+id/rdb_nam"
-        app:layout_constraintStart_toEndOf="@+id/rdb_nam"
-        app:layout_constraintTop_toTopOf="@+id/rdb_nam" />
-
-    <RadioButton
-        android:id="@+id/rdb_nam"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="38dp"
-
-        android:text="Nam"
-        app:layout_constraintBottom_toBottomOf="@+id/txt_Gender"
-        app:layout_constraintStart_toEndOf="@+id/txt_Gender"
-        app:layout_constraintTop_toTopOf="@+id/txt_Gender" />
 
     <ImageButton
         android:id="@+id/img_btn_back_profile"
@@ -174,5 +154,33 @@
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/edt_phone" />
+
+    <RadioGroup
+        android:id="@+id/rg_gender"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="@+id/txt_Gender"
+        app:layout_constraintStart_toEndOf="@+id/txt_Gender"
+        app:layout_constraintTop_toTopOf="@+id/txt_Gender">
+
+        <RadioButton
+            android:id="@+id/rdb_nam"
+            android:layout_width="wrap_content"
+            android:layout_height="48dp"
+
+            android:text="Nam"
+            tools:layout_editor_absoluteX="147dp"
+            tools:layout_editor_absoluteY="368dp" />
+
+        <RadioButton
+            android:id="@+id/rdb_nu"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Nữ"
+            tools:layout_editor_absoluteX="241dp"
+            tools:layout_editor_absoluteY="368dp" />
+    </RadioGroup>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

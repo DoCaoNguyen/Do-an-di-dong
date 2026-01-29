@@ -108,6 +108,10 @@ class PostDetailAdapter(
         var txtContent = itemView.findViewById<TextView>(R.id.txtCommentContent)
         var txtName = itemView.findViewById<TextView>(R.id.txtCommentName)
         var imgProfile = itemView.findViewById<ImageView>(R.id.imgCommentProfile)
+<<<<<<< HEAD
+=======
+        var txtSeeMore = itemView.findViewById<TextView>(R.id.txtSeeMore)
+>>>>>>> 9b678474de3189cfeb55ceec1136ea8955777c11
         var txtVote = itemView.findViewById<TextView>(R.id.txtVote)
         var txtTotalComment = itemView.findViewById<TextView>(R.id.txtTotalComment)
     }

@@ -6,7 +6,7 @@ const { sequelize } = require('../../models');
 
 class AuthService {
 
-    async register({ username, email, password }) {
+    async register({ username, email, password, birthday}) {
         const transaction = await sequelize.transaction();
         try {
             const existingUser = await authRepository.findUserByEmail(email);
@@ -15,7 +15,7 @@ class AuthService {
             const existingUsername = await authRepository.findUserByUsername(username);
             if (existingUsername) throw new Error('Email hoặc username đã tồn tại');
 
-            const newUser = await authRepository.createUser({ username, email,brithday, role: 'user' }, transaction);
+            const newUser = await authRepository.createUser({ username, email, password, birthday, role: 'user' }, transaction);
             const salt = await bcrypt.genSalt(10);
             const passwordHash = await bcrypt.hash(password, salt);
 

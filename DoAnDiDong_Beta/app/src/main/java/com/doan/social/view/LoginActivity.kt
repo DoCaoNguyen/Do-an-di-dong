@@ -2,7 +2,6 @@ package com.doan.social.view
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
@@ -19,14 +18,33 @@ import com.doan.social.viewmodel.UserViewmodel
 import kotlinx.coroutines.launch
 import okhttp3.OkHttpClient
 import androidx.core.content.edit
+import kotlinx.coroutines.delay
 
 class LoginActivity : AppCompatActivity() {
 
-    private lateinit var btnForgotNext: Button
     private lateinit var edtEmail: EditText
+
     private lateinit var edtPassword: EditText
 
     private val client = OkHttpClient()
+
+    private var failCount = 0
+
+    private var isLocked = false
+
+    private fun lockLoginButton() {
+        val btnLogin = findViewById<Button>(R.id.btn_Login)
+
+        isLocked = true
+        btnLogin.isEnabled = false
+
+        lifecycleScope.launch {
+            delay(30000)
+            failCount = 0
+            isLocked = false
+            btnLogin.isEnabled = true
+        }
+    }
 
 
 
@@ -41,12 +59,11 @@ class LoginActivity : AppCompatActivity() {
             insets
         }
 
-
-
         //Chưa có tài khoản -> Đăng ký
         findViewById<TextView>(R.id.btnRegLogin).setOnClickListener {
             startActivity(Intent(this, RegisterActivity::class.java))
         }
+
         findViewById<TextView>(R.id.btnRegLogin2).setOnClickListener {
             startActivity(Intent(this, RegisterActivity::class.java))
         }
@@ -56,15 +73,18 @@ class LoginActivity : AppCompatActivity() {
             startActivity(Intent(this, ForgotPasswordActivity::class.java))
         }
 
-
         //Đăng nhập
         val onboardprefs = getSharedPreferences("onboarding_done", MODE_PRIVATE)
         edtEmail = findViewById(R.id.txtForgotEmail)
         edtPassword = findViewById(R.id.edtRegPassword)
         val userViewmodel: UserViewmodel = UserViewmodel(client)
         var user: UserRequest
-        findViewById<Button>(R.id.btnForgotContinue).setOnClickListener {
-            Log.d("onboard", onboardprefs.getBoolean("onboarding_done",false).toString())
+        findViewById<Button>(R.id.btn_Login).setOnClickListener {
+
+            if (isLocked) {
+                return@setOnClickListener
+            }
+
             lifecycleScope.launch {
                 user = UserRequest(edtEmail.text.toString(), edtPassword.text.toString())
                 val userData = userViewmodel.postLogin(user)
@@ -79,8 +99,24 @@ class LoginActivity : AppCompatActivity() {
                     }
                     startActivity(intent)
                 } else {
-                    Toast.makeText(this@LoginActivity, "Đăng Nhập Thất Bại", Toast.LENGTH_SHORT)
-                        .show()
+
+                    failCount++
+
+                    if (failCount <= 5 ){
+                        Toast.makeText(this@LoginActivity, "Sai email đăng nhập hoặc mật khẩu!", Toast.LENGTH_SHORT)
+                            .show()
+                    }else{
+                        Toast.makeText(
+                            this@LoginActivity,
+                            "Sai tài khoản hoặc mật khẩu quá 5 lần. Vui lòng chờ 30 giây để thử lại",
+                            Toast.LENGTH_SHORT
+                        ).show()
+
+                        if (failCount >= 5) {
+                            lockLoginButton()
+                            failCount = 0
+                        }
+                    }
                 }
 
             }
