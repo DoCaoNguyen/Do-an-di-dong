@@ -22,7 +22,6 @@ class ForgotPasswordActivity : AppCompatActivity() {
 
         findViewById<Button>(R.id.btnForgotContinue).setOnClickListener {
             val email = findViewById<EditText>(R.id.txtForgotEmail).text
-
         }
 
         findViewById<ImageButton>(R.id.imgbtnBack).setOnClickListener {

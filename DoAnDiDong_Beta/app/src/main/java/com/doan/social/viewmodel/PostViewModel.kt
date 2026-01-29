@@ -128,4 +128,30 @@ class PostViewModel {
         }
     }
 
+    suspend fun getVoteCount(postId: Int, token: String?): Int? {
+        val url = "$baseUrl/$postId/vote"
+        return withContext(Dispatchers.IO) {
+            try {
+                val request = Request.Builder()
+                    .url(url)
+                    .get()
+                    .addHeader("Authorization", "Bearer $token")
+                    .build()
+
+                val response = client.newCall(request).execute()
+                response.use { res ->
+                    if (res.isSuccessful) {
+                        val bodyString = res.body?.string() ?: ""
+                        val json = Json { ignoreUnknownKeys = true }
+                        val element = json.parseToJsonElement(bodyString).jsonObject
+                        return@withContext element["data"]?.jsonObject?.get("totalScore")?.jsonPrimitive?.int
+                    }
+                    null
+                }
+            } catch (e: Exception) {
+                null
+            }
+        }
+    }
+
 }

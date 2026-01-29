@@ -40,6 +40,15 @@ class HomeActivity : AppCompatActivity() {
         rcv_home = findViewById(R.id.rcvHome)
         lifecycleScope.launch {
             postList = postViewModel.getPost()
+            postList.forEach { post ->
+                val comments = postViewModel.getCommentsByPost(post.id)
+                post.comments_count = calculateTotalComments(comments)
+
+                val currentScore = postViewModel.getVoteCount(post.id, accessToken)
+                if (currentScore != null) {
+                    post.votes_count = currentScore
+                }
+            }
             rcv_home.layoutManager = LinearLayoutManager(this@HomeActivity)
             rcv_home.adapter = HomeAdapter(postList, object : HomeAdapter.OnClickPostItem {
                 override fun onClickPostItem(post: PostModel) {
@@ -50,20 +59,15 @@ class HomeActivity : AppCompatActivity() {
                 }
                 override fun onVoteClick(post: PostModel, voteType: Int) {
                     val typeString = if (voteType == 1) "upvote" else "downvote"
-
                     lifecycleScope.launch {
                         val newScore = postViewModel.votePost(post.id, typeString, accessToken)
                         if (newScore != null) {
                             post.votes_count = newScore
-                            post.user_vote = if (post.user_vote == voteType) 0 else voteType
-                            rcv_home.adapter?.notifyDataSetChanged()
+                            val index = postList.indexOf(post)
+                            if (index != -1) {
+                                rcv_home.adapter?.notifyItemChanged(index + 1)
+                            }
                         }
-                        postList = postViewModel.getPost()
-                        postList.forEach { post ->
-                            val comments = postViewModel.getCommentsByPost(post.id)
-                            post.comments_count = calculateTotalComments(comments)
-                        }
-                        rcv_home.adapter?.notifyDataSetChanged()
                     }
                 }
             })
