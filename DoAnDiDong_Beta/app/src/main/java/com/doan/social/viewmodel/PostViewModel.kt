@@ -154,4 +154,25 @@ class PostViewModel {
         }
     }
 
+    suspend fun postComment(postId: Int, content: String, token: String?): Boolean {
+        val url = "http://10.0.2.2:3000/api/posts/$postId/comments"
+        val jsonBody = "{\"content\": \"$content\"}"
+        val requestBody = jsonBody.toRequestBody("application/json".toMediaType())
+
+        return withContext(Dispatchers.IO) {
+            try {
+                val request = Request.Builder()
+                    .url(url)
+                    .post(requestBody)
+                    .addHeader("Authorization", "Bearer $token")
+                    .build()
+
+                val response = client.newCall(request).execute()
+                response.isSuccessful
+            } catch (e: Exception) {
+                false
+            }
+        }
+    }
+
 }

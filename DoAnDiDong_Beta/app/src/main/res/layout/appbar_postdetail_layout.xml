@@ -27,7 +27,7 @@
         android:layout_height="39dp"
         android:layout_alignBottom="@+id/toolbar"
         android:layout_alignParentTop="true"
-        android:layout_marginStart="16dp"
+        android:layout_marginStart="44dp"
         android:layout_marginTop="44dp"
         android:layout_marginBottom="19dp"
         android:elevation="4dp"
@@ -35,20 +35,20 @@
         app:layout_constraintBottom_toBottomOf="@+id/toolbar"
         app:layout_constraintStart_toStartOf="@+id/toolbar"
         app:layout_constraintTop_toTopOf="@+id/toolbar"
-        app:layout_constraintVertical_bias="0.73" />
+        app:layout_constraintVertical_bias="0.0" />
 
     <ImageButton
         android:id="@+id/imgbtnReturn"
         android:layout_width="48dp"
         android:layout_height="48dp"
-        android:layout_marginEnd="16dp"
+        android:layout_marginEnd="356dp"
         android:background="?attr/selectableItemBackgroundBorderless"
         android:elevation="5dp"
         android:scaleType="centerInside"
         app:layout_constraintBottom_toBottomOf="@+id/toolbar"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/toolbar"
-        app:layout_constraintVertical_bias="0.814"
-        app:srcCompat="@drawable/create_post" />
+        app:layout_constraintVertical_bias="0.703"
+        app:srcCompat="@drawable/outline_arrow_back" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

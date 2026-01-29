@@ -3,13 +3,13 @@ package com.doan.social.adapter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.doan.social.R
 import com.doan.social.model.PostModel
-import com.doan.social.viewmodel.PostViewModel
 
 class HomeAdapter(private val postList: MutableList<PostModel>, private val listener: OnClickPostItem) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
@@ -44,6 +44,11 @@ class HomeAdapter(private val postList: MutableList<PostModel>, private val list
         position: Int
     ) {
         when (holder) {
+            is AppBarViewHolder -> {
+                holder.itemView.findViewById<ImageButton>(R.id.imgbtnReturn).setOnClickListener {
+                    listener.onCreatePostClick()
+                }
+            }
             is HomeViewHolder -> {
                 val item = postList[position - 1]
                 holder.txtTitle.text = item.title
@@ -108,9 +113,10 @@ class HomeAdapter(private val postList: MutableList<PostModel>, private val list
         var txtTotalComment = itemView.findViewById<TextView>(R.id.txtTotalComment)
     }
 
-    interface OnClickPostItem{
+    interface OnClickPostItem {
         fun onClickPostItem(post: PostModel)
         fun onVoteClick(post: PostModel, voteType: Int)
+        fun onCreatePostClick()
     }
 
 }

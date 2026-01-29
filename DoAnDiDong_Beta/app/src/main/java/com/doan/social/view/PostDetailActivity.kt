@@ -22,6 +22,7 @@ class PostDetailActivity : AppCompatActivity() {
 
 
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -31,6 +32,9 @@ class PostDetailActivity : AppCompatActivity() {
             insets
         }
 
+        val sharedPref = getSharedPreferences("user_data", MODE_PRIVATE)
+        val avatarUrl = sharedPref.getString("avatar", "")
+        android.util.Log.d("AVATAR_DEBUG", "URL: $avatarUrl")
         val rcvPostDetail = findViewById<RecyclerView>(R.id.rcvPostDetail)
 
         lifecycleScope.launch {
@@ -40,7 +44,25 @@ class PostDetailActivity : AppCompatActivity() {
                 val commentList = postViewModel.getCommentsByPost(post.id)
                 val totalCount = calculateTotalComments(commentList)
                 post.comments_count = totalCount
-                rcvPostDetail.adapter = PostDetailAdapter(post, commentList)
+                rcvPostDetail.adapter = PostDetailAdapter(post, commentList, avatarUrl, object : PostDetailAdapter.OnClickPostItem {
+                    override fun onPostComment(text: String) {
+                        lifecycleScope.launch {
+                            val sharedPref = getSharedPreferences("user_data", MODE_PRIVATE)
+                            val token = sharedPref.getString("access_token", "")
+                            val success = postViewModel.postComment(post!!.id, text, token)
+
+                            if (success) {
+                                Toast.makeText(this@PostDetailActivity, "Đã đăng bình luận", Toast.LENGTH_SHORT).show()
+                                val updatedComments = postViewModel.getCommentsByPost(post!!.id)
+                                commentList.clear()
+                                commentList.addAll(updatedComments)
+                                rcvPostDetail.adapter?.notifyDataSetChanged()
+                            } else {
+                                Toast.makeText(this@PostDetailActivity, "Lỗi khi đăng bình luận", Toast.LENGTH_SHORT).show()
+                            }
+                        }
+                    }
+                })
             }
             else {
                 Toast.makeText(this@PostDetailActivity, "Không tìm thấy bài viết", Toast.LENGTH_SHORT).show()

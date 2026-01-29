@@ -39,6 +39,7 @@ class HomeActivity : AppCompatActivity() {
 
         rcv_home = findViewById(R.id.rcvHome)
         lifecycleScope.launch {
+
             postList = postViewModel.getPost()
             postList.forEach { post ->
                 val comments = postViewModel.getCommentsByPost(post.id)
@@ -51,6 +52,10 @@ class HomeActivity : AppCompatActivity() {
             }
             rcv_home.layoutManager = LinearLayoutManager(this@HomeActivity)
             rcv_home.adapter = HomeAdapter(postList, object : HomeAdapter.OnClickPostItem {
+                override fun onCreatePostClick() {
+                    val intent = Intent(this@HomeActivity, PostCreateActivity::class.java)
+                    startActivity(intent)
+                }
                 override fun onClickPostItem(post: PostModel) {
                     val intent = Intent(this@HomeActivity, PostDetailActivity::class.java)
                     val postJson = Json.encodeToString(post)
