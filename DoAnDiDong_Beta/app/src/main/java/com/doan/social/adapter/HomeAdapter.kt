@@ -50,6 +50,19 @@ class HomeAdapter(private val postList: MutableList<PostModel>, private val list
                 holder.txtContent.text = item.content
                 holder.txtVote.text = item.votes_count.toString()
                 holder.txtTotalComment.text = item.comments_count.toString()
+                val context = holder.itemView.context
+                val defaultColor = android.graphics.Color.GRAY
+                holder.imgUpvote.setColorFilter(defaultColor)
+                holder.imgDownvote.setColorFilter(defaultColor)
+
+                when (item.user_vote) {
+                    1 -> {
+                        holder.imgUpvote.setColorFilter(android.graphics.Color.parseColor("#FF4500"))
+                    }
+                    -1 -> {
+                        holder.imgDownvote.setColorFilter(android.graphics.Color.parseColor("#7193FF"))
+                    }
+                }
 
                 holder.imgUpvote.setOnClickListener { listener.onVoteClick(item, 1) }
                 holder.imgDownvote.setOnClickListener { listener.onVoteClick(item, -1) }
