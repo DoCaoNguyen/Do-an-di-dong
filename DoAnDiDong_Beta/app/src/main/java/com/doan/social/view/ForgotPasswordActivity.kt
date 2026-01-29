@@ -23,20 +23,17 @@ class ForgotPasswordActivity : AppCompatActivity() {
         enableEdgeToEdge()
         setContentView(R.layout.activity_forgot_password)
 
-<<<<<<< HEAD
         val btnContinue = findViewById<Button>(R.id.btnForgotContinue)
         val edtEmail = findViewById<EditText>(R.id.txtForgotEmail)
         val layoutResetDetails = findViewById<LinearLayout>(R.id.layoutResetDetails)
         val edtOTP = findViewById<EditText>(R.id.edtOTP)
         val edtNewPassword = findViewById<EditText>(R.id.edtNewPassword)
         val txtTitle = findViewById<TextView>(R.id.textView4)
+
         val txtTimer = TextView(this).apply {
             textAlignment = View.TEXT_ALIGNMENT_CENTER
             setPadding(0, 20, 0, 0)
-=======
-        findViewById<Button>(R.id.btn_Login).setOnClickListener {
-            val email = findViewById<EditText>(R.id.txtForgotEmail).text
->>>>>>> 9b678474de3189cfeb55ceec1136ea8955777c11
+            setTextColor(resources.getColor(R.color.black, null))
         }
         layoutResetDetails.addView(txtTimer)
 
@@ -72,7 +69,7 @@ class ForgotPasswordActivity : AppCompatActivity() {
                         Toast.makeText(this@ForgotPasswordActivity, "Mã sai hoặc hết hạn", Toast.LENGTH_SHORT).show()
                     }
                 }
-                setLoading(btnContinue, false) // End loading state
+                setLoading(btnContinue, false)
             }
         }
     }
@@ -81,7 +78,6 @@ class ForgotPasswordActivity : AppCompatActivity() {
         button.isEnabled = !isLoading
         button.text = if (isLoading) "Đang xử lý..." else "Tiếp Tục"
     }
-
     private fun startTimer(timerTextView: TextView) {
         countDownTimer?.cancel()
         countDownTimer = object : CountDownTimer(120000, 1000) {
@@ -90,7 +86,6 @@ class ForgotPasswordActivity : AppCompatActivity() {
                 val seconds = (millisUntilFinished / 1000) % 60
                 timerTextView.text = String.format(Locale.getDefault(), "Mã hết hạn sau: %02d:%02d", minutes, seconds)
             }
-
             override fun onFinish() {
                 timerTextView.text = "Mã OTP đã hết hạn. Vui lòng gửi lại."
                 resetToken = null
