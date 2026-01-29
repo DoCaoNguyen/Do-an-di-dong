@@ -37,7 +37,9 @@ class HomeViewModel {
 
                         if (postsArray != null) {
                             val data = json.decodeFromJsonElement<List<PostModel>>(postsArray)
+                            Log.d("data", postList.toString())
                             postList.addAll(data)
+
                         }
                     } else {
                         Log.e("API_ERROR", "Status Code: ${res.code}")

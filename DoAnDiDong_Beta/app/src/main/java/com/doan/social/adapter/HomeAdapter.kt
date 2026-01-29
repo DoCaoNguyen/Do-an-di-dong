@@ -53,9 +53,10 @@ class HomeAdapter(private val postList: MutableList<PostModel>, private val list
                 val item = postList[position - 2]
                 holder.txtTitle.text = item.title
                 holder.txtContent.text = item.content
-                holder.txtName.text = item.user?.username
+                holder.txtName.text = item.user.username
+
                 Glide.with(holder.itemView.context)
-                    .load(item.user?.avatarurl)
+                    .load(item.user.avatarurl)
                     .placeholder(R.drawable.avartar_profile)
                     .error(R.drawable.avartar_profile)
                     .into(holder.imgProfile)
@@ -75,7 +76,7 @@ class HomeAdapter(private val postList: MutableList<PostModel>, private val list
     class PostBarViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
     class HomeViewHolder(itemView: View, listener: HomeAdapter.OnClickPostItem) : RecyclerView.ViewHolder(itemView) {
         var txtTitle = itemView.findViewById<TextView>(R.id.txtTitle)
-        var txtContent = itemView.findViewById<TextView>(R.id.txtComment)
+        var txtContent = itemView.findViewById<TextView>(R.id.txtContent)
         var txtName = itemView.findViewById<TextView>(R.id.txtName)
         var imgProfile = itemView.findViewById<ImageView>(R.id.imgProfile)
         var imgUpvote = itemView.findViewById<ImageView>(R.id.imageButton2)

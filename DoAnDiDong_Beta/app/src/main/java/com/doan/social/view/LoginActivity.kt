@@ -65,7 +65,6 @@ class LoginActivity : AppCompatActivity() {
         var user: UserRequest
         findViewById<Button>(R.id.btnLogin).setOnClickListener {
             onboardprefs.edit { putBoolean("onboarding_done", true) }
-            Log.d("onboard", onboardprefs.getBoolean("onboarding_done",false).toString())
             lifecycleScope.launch {
                 user = UserRequest(edtEmail.text.toString(), edtPassword.text.toString())
                 val userData = userViewmodel.postLogin(user)

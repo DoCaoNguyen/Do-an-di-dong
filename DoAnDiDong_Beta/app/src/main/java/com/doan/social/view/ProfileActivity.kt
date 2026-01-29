@@ -37,8 +37,18 @@ class ProfileActivity : AppCompatActivity(), PostProfileAdapter.OnClickPostItem 
     private lateinit var txt_followers: TextView
     private lateinit var txt_following: TextView
     private lateinit var rcv_postProfile: RecyclerView
-    private lateinit var btn_postCreate: Button
     private val client = OkHttpClient()
+
+    private fun saveUserToPrefs(user: UserProfileModel) {
+        val prefs = getSharedPreferences("user_profile", MODE_PRIVATE)
+        prefs.edit()
+            .putString("avatar", user.avatarurl)
+            .putString("username", user.username)
+            .putString("gender", user.gender)
+            .putString("phone", user.phone)
+            .putString("birthday", user.birthday)
+            .apply()
+    }
 
     val postView = UserViewmodel(client)
     var listPosts: MutableList<PostModel> = mutableListOf<PostModel>()
@@ -62,6 +72,8 @@ class ProfileActivity : AppCompatActivity(), PostProfileAdapter.OnClickPostItem 
 
         lifecycleScope.launch {
             user = postView.getUserProfile(accessToken)
+
+            saveUserToPrefs(user)
             avtV_user.setAvatar(user.avatarurl)
             txt_userName.setText(user.username)
             txt_userGender.setText(user.gender)
@@ -92,12 +104,6 @@ class ProfileActivity : AppCompatActivity(), PostProfileAdapter.OnClickPostItem 
         txt_following =  findViewById(R.id.txt_following)
         rcv_postProfile = findViewById(R.id.rcv_postProfile)
         img_setting_profile = findViewById(R.id.img_setting_profile)
-        btn_postCreate = findViewById(R.id.btn_postCreate)
-
-        btn_postCreate.setOnClickListener {
-            val intent = Intent(this, PostCreateActivity::class.java)
-            startActivity(intent)
-        }
 
         reloadProfile()
 
@@ -106,11 +112,6 @@ class ProfileActivity : AppCompatActivity(), PostProfileAdapter.OnClickPostItem 
         img_setting_profile.setOnClickListener {
             val intent = Intent(this, SettingProfileActivity::class.java)
             intent.putExtra("accessToken",accessToken)
-            intent.putExtra("gender",user.gender)
-            intent.putExtra("phone",user.phone)
-            intent.putExtra("birthday",user.birthday)
-            intent.putExtra("avatar",user.avatarurl)
-            intent.putExtra("username",user.username)
             updateProfileLauncher.launch(intent)
         }
 

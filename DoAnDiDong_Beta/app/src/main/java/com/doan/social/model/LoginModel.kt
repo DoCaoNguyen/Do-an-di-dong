@@ -25,9 +25,9 @@ data class UserData(
     val username: String,
     val email: String,
     val role: String,
-    val avatarurl: String,
-    val gender: String,
-    val phone: String,
+    val avatarurl: String?,
+    val gender: String?,
+    val phone: String?,
     val birthday: String,
-    val status: String,
+    val status: String?,
 )

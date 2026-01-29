@@ -1,7 +1,11 @@
 package com.doan.social.viewmodel
 
 
+import android.content.ContentResolver
 import android.content.SharedPreferences
+import android.net.Uri
+import android.provider.OpenableColumns
+import android.util.Log
 import com.doan.social.model.LogoutModel
 import com.doan.social.model.UpdateProfileModel
 import kotlinx.coroutines.Dispatchers
@@ -11,6 +15,7 @@ import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.MultipartBody
 import okhttp3.OkHttpClient
 import okhttp3.Request
+import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
 
 
@@ -51,7 +56,8 @@ class SettingProfileViewModel(private val client: OkHttpClient,
         accessToken: String?,
         phone: String, gender: String,
         birthday: String,
-        avatar: String? = null
+//        avatar: Uri?,
+//        contentResolver: ContentResolver
     ): UpdateProfileModel? {
         try {
             val baseUrl = "http://10.0.2.2:3000/api/users/update"
@@ -60,6 +66,16 @@ class SettingProfileViewModel(private val client: OkHttpClient,
                 .addFormDataPart("phone", phone)
                 .addFormDataPart("gender", gender)
                 .addFormDataPart("birthday", birthday)
+
+//            if (avatar != null) {
+//                val imageBody = uriToRequestBody(contentResolver, avatar)
+//
+//                bodyBuilder.addFormDataPart(
+//                    "image",
+//                    "avatar.jpg",
+//                    imageBody
+//                )
+//            }
 
             val request = Request.Builder()
                 .url(baseUrl)
@@ -84,6 +100,14 @@ class SettingProfileViewModel(private val client: OkHttpClient,
             throw Exception("Lỗi: ${e.message}")
         }
     }
+
+//    private fun uriToRequestBody(
+//        resolver: ContentResolver,
+//        uri: Uri
+//    ): RequestBody {
+//        val bytes = resolver.openInputStream(uri)!!.readBytes()
+//        return bytes.toRequestBody("image/*".toMediaType())
+//    }
 
 }
 

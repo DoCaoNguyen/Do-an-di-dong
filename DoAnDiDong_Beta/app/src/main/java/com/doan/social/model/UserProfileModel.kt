@@ -9,12 +9,18 @@ data class UserProfileModel(
     val username: String,
     val email: String,
     val role: String,
-    val avatarurl: String,
-    val gender: String,
-    val phone: String,
+    val avatarurl: String?,
+    val gender: String?,
+    val phone: String?,
     val birthday: String,
     val status: String,
     val followersCount: Int,
     val followingCount: Int,
-    val userTags: List<PostModel>
+    val userTags: List<UserTag>
+)
+
+@Serializable
+data class UserTag(
+    val id: Int,
+    val tags_name: String
 )

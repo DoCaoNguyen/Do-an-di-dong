@@ -9,7 +9,7 @@
 
 
     <Button
-        android:id="@+id/btnRegRegister"
+        android:id="@+id/btn_RegRegister"
         android:layout_width="320dp"
         android:layout_height="50dp"
         android:layout_marginBottom="196dp"
@@ -38,7 +38,7 @@
         android:layout_height="39dp"
         android:layout_marginTop="176dp"
         android:src="@drawable/img_logo"
-        app:layout_constraintBottom_toTopOf="@+id/txtUsername"
+        app:layout_constraintBottom_toTopOf="@+id/edt_Username"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.053"
         app:layout_constraintStart_toStartOf="parent"
@@ -56,7 +56,7 @@
         app:layout_constraintStart_toStartOf="parent" />
 
     <EditText
-        android:id="@+id/txtUsername"
+        android:id="@+id/edt_Username"
         android:layout_width="320dp"
         android:layout_height="50dp"
         android:layout_marginTop="280dp"
@@ -70,7 +70,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
-        android:id="@+id/txtRetypePassword"
+        android:id="@+id/edt_RetypePassword"
         android:layout_width="0dp"
         android:layout_height="50dp"
         android:layout_marginTop="20dp"
@@ -78,13 +78,13 @@
         android:ems="10"
         android:hint="Nhập lại mật khẩu"
         android:inputType="textPassword"
-        app:layout_constraintEnd_toEndOf="@+id/txtPassword"
+        app:layout_constraintEnd_toEndOf="@+id/edt_Password"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/txtPassword"
-        app:layout_constraintTop_toBottomOf="@+id/txtPassword" />
+        app:layout_constraintStart_toStartOf="@+id/edt_Password"
+        app:layout_constraintTop_toBottomOf="@+id/edt_Password" />
 
     <EditText
-        android:id="@+id/txtPassword"
+        android:id="@+id/edt_Password"
         android:layout_width="0dp"
         android:layout_height="50dp"
         android:layout_marginTop="20dp"
@@ -92,10 +92,10 @@
         android:ems="10"
         android:hint="Mật khẩu"
         android:inputType="textPassword"
-        app:layout_constraintEnd_toEndOf="@+id/txtEmail"
+        app:layout_constraintEnd_toEndOf="@+id/edt_Email"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/txtEmail"
-        app:layout_constraintTop_toBottomOf="@+id/txtEmail" />
+        app:layout_constraintStart_toStartOf="@+id/edt_Email"
+        app:layout_constraintTop_toBottomOf="@+id/edt_Email" />
 
     <EditText
         android:id="@+id/txtDOB"
@@ -109,13 +109,13 @@
         android:focusable="false"
         android:focusableInTouchMode="false"
         android:clickable="true"
-        app:layout_constraintEnd_toEndOf="@+id/txtRetypePassword"
+        app:layout_constraintEnd_toEndOf="@+id/edt_RetypePassword"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/txtRetypePassword"
-        app:layout_constraintTop_toBottomOf="@+id/txtRetypePassword" />
+        app:layout_constraintStart_toStartOf="@+id/edt_RetypePassword"
+        app:layout_constraintTop_toBottomOf="@+id/edt_RetypePassword" />
 
     <EditText
-        android:id="@+id/txtEmail"
+        android:id="@+id/edt_Email"
         android:layout_width="0dp"
         android:layout_height="50dp"
         android:layout_marginTop="20dp"
@@ -123,10 +123,10 @@
         android:ems="10"
         android:hint="Email"
         android:inputType="textEmailAddress"
-        app:layout_constraintEnd_toEndOf="@+id/txtUsername"
+        app:layout_constraintEnd_toEndOf="@+id/edt_Username"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/txtUsername"
-        app:layout_constraintTop_toBottomOf="@+id/txtUsername" />
+        app:layout_constraintStart_toStartOf="@+id/edt_Username"
+        app:layout_constraintTop_toBottomOf="@+id/edt_Username" />
 
     <ImageView
         android:id="@+id/imageView4"

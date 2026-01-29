@@ -1,7 +1,9 @@
 package com.doan.social.view
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
+import android.widget.Button
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -23,6 +25,7 @@ class HomeActivity : AppCompatActivity() {
     private lateinit var postList: MutableList<PostModel>
     private lateinit var rcv_home: RecyclerView
 
+    @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -46,10 +49,12 @@ class HomeActivity : AppCompatActivity() {
         }
         val userdata = getSharedPreferences("user_data", MODE_PRIVATE)
         val accessToken = userdata.getString("accessToken", "")
+//        btn_createPost = findViewById(R.id.btn_createPost)
 
 
         val botNav = findViewById<BottomNavigationView>(R.id.btnNavi)
         botNav.setSelectedItemId(R.id.bottom_home)
+
 
         botNav.setOnItemSelectedListener { item ->
             when(item.itemId){
@@ -74,5 +79,12 @@ class HomeActivity : AppCompatActivity() {
                 else -> false
             }
         }
+
+//        btn_createPost.setOnClickListener {
+//            val intent = Intent(this, PostCreateActivity::class.java)
+//            startActivity(intent)
+//        }
     }
 }
+
+
