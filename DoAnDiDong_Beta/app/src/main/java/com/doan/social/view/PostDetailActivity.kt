@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.doan.social.R
 import com.doan.social.adapter.PostDetailAdapter
+import com.doan.social.model.CommentModel
 import com.doan.social.model.PostModel
 import com.doan.social.viewmodel.PostViewModel
 import kotlinx.coroutines.launch
@@ -18,6 +19,9 @@ import kotlinx.serialization.json.Json
 
 class PostDetailActivity : AppCompatActivity() {
     private val postViewModel = PostViewModel()
+
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -34,6 +38,8 @@ class PostDetailActivity : AppCompatActivity() {
             if (postJson != null) {
                 val post = Json.decodeFromString<PostModel>(postJson)
                 val commentList = postViewModel.getCommentsByPost(post.id)
+                val totalCount = calculateTotalComments(commentList)
+                post.comments_count = totalCount
                 rcvPostDetail.adapter = PostDetailAdapter(post, commentList)
             }
             else {
@@ -41,5 +47,15 @@ class PostDetailActivity : AppCompatActivity() {
             }
             rcvPostDetail.layoutManager = LinearLayoutManager(this@PostDetailActivity)
         }
+
     }
+}
+
+fun calculateTotalComments(comments: List<CommentModel>): Int {
+    var count = 0
+    for (comment in comments) {
+        count++
+        count += calculateTotalComments(comment.replies)
+    }
+    return count
 }

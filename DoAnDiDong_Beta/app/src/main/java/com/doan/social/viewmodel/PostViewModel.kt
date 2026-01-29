@@ -10,9 +10,12 @@ import kotlinx.serialization.json.booleanOrNull
 import kotlinx.serialization.json.jsonArray
 import kotlinx.serialization.json.jsonObject
 import kotlinx.serialization.json.decodeFromJsonElement
+import kotlinx.serialization.json.int
 import kotlinx.serialization.json.jsonPrimitive
+import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import okhttp3.Request
+import okhttp3.RequestBody.Companion.toRequestBody
 
 class PostViewModel {
     private val baseUrl = "http://10.0.2.2:3000/api/posts"
@@ -68,7 +71,7 @@ class PostViewModel {
 
     suspend fun getCommentsByPost(postId: Int): MutableList<CommentModel> {
         val commentModelList = mutableListOf<CommentModel>()
-        val url = "${baseUrl}/api/posts/${postId}/comments"
+        val url = "${baseUrl}/$postId/comments"
 
         return withContext(Dispatchers.IO) {
             try {
@@ -78,14 +81,12 @@ class PostViewModel {
                     .build()
 
                 val response = client.newCall(request).execute()
-
                 response.use { res ->
                     if (res.isSuccessful) {
                         val bodyString = res.body?.string() ?: ""
                         val json = Json { ignoreUnknownKeys = true }
                         val element = json.parseToJsonElement(bodyString).jsonObject
                         val commentsArray = element["data"]?.jsonArray
-
                         if (commentsArray != null) {
                             val data = json.decodeFromJsonElement<List<CommentModel>>(commentsArray)
                             commentModelList.addAll(data)
@@ -96,6 +97,34 @@ class PostViewModel {
                 Log.e("API_ERROR", "Lỗi lấy bình luận: ${e.message}")
             }
             commentModelList
+        }
+    }
+
+    suspend fun votePost(postId: Int, type: String, token: String?): Int? {
+        val url = "${baseUrl}/$postId/vote"
+        val jsonString = "{\"type\": \"$type\"}"
+        val requestBody = jsonString.toRequestBody("application/json".toMediaType())
+        return withContext(Dispatchers.IO) {
+            try {
+                val request = Request.Builder()
+                    .url(url)
+                    .post(requestBody)
+                    .addHeader("Authorization", "Bearer $token")
+                    .build()
+
+                val response = client.newCall(request).execute()
+                response.use { res ->
+                    if (res.isSuccessful) {
+                        val bodyString = res.body?.string() ?: ""
+                        val json = Json { ignoreUnknownKeys = true }
+                        val element = json.parseToJsonElement(bodyString).jsonObject
+                        return@withContext element["data"]?.jsonObject?.get("totalScore")?.jsonPrimitive?.int
+                    }
+                    null
+                }
+            } catch (e: Exception) {
+                null
+            }
         }
     }
 

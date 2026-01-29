@@ -6,8 +6,9 @@ import kotlinx.serialization.Serializable
 data class CommentModel(
     val id: Int,
     val comment: String,
-    val post_id: Int,
+    val posts_id: Int,
     val users_id: Int,
     val parent_id: Int?,
-    val user: UserPost
+    val user: UserPost,
+    val replies: List<CommentModel> = emptyList()
 )

@@ -34,6 +34,9 @@ class HomeActivity : AppCompatActivity() {
             insets
         }
 
+        val userdata = getSharedPreferences("user_data", MODE_PRIVATE)
+        val accessToken = userdata.getString("accessToken", "")
+
         rcv_home = findViewById(R.id.rcvHome)
         lifecycleScope.launch {
             postList = postViewModel.getPost()
@@ -45,11 +48,26 @@ class HomeActivity : AppCompatActivity() {
                     intent.putExtra("post_data",postJson)
                     startActivity(intent)
                 }
+                override fun onVoteClick(post: PostModel, voteType: Int) {
+                    val typeString = if (voteType == 1) "upvote" else "downvote"
+
+                    lifecycleScope.launch {
+                        val newScore = postViewModel.votePost(post.id, typeString, accessToken)
+                        if (newScore != null) {
+                            post.votes_count = newScore
+                            post.user_vote = if (post.user_vote == voteType) 0 else voteType
+                            rcv_home.adapter?.notifyDataSetChanged()
+                        }
+                        postList = postViewModel.getPost()
+                        postList.forEach { post ->
+                            val comments = postViewModel.getCommentsByPost(post.id)
+                            post.comments_count = calculateTotalComments(comments)
+                        }
+                        rcv_home.adapter?.notifyDataSetChanged()
+                    }
+                }
             })
         }
-        val userdata = getSharedPreferences("user_data", MODE_PRIVATE)
-        val accessToken = userdata.getString("accessToken", "")
-
 
         val botNav = findViewById<BottomNavigationView>(R.id.btnNavi)
         botNav.setSelectedItemId(R.id.bottom_home)

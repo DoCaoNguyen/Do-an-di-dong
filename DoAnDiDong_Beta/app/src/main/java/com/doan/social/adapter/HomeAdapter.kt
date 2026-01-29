@@ -48,6 +48,11 @@ class HomeAdapter(private val postList: MutableList<PostModel>, private val list
                 val item = postList[position - 1]
                 holder.txtTitle.text = item.title
                 holder.txtContent.text = item.content
+                holder.txtVote.text = item.votes_count.toString()
+                holder.txtTotalComment.text = item.comments_count.toString()
+
+                holder.imgUpvote.setOnClickListener { listener.onVoteClick(item, 1) }
+                holder.imgDownvote.setOnClickListener { listener.onVoteClick(item, -1) }
 
                 holder.txtContent.post {
                     if (holder.txtContent.lineCount > 3){
@@ -92,6 +97,7 @@ class HomeAdapter(private val postList: MutableList<PostModel>, private val list
 
     interface OnClickPostItem{
         fun onClickPostItem(post: PostModel)
+        fun onVoteClick(post: PostModel, voteType: Int)
     }
 
 }

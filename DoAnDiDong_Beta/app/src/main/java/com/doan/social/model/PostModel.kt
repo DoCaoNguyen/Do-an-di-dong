@@ -11,7 +11,10 @@ data class PostModel(
     val status: String,
     val user: UserPost,
     val tags: List<Tag>,
-    var isExpanded: Boolean = false
+    var isExpanded: Boolean = false,
+    var votes_count: Int = 0,
+    var comments_count: Int = 0,
+    var user_vote: Int = 0
 )
 
 @Serializable

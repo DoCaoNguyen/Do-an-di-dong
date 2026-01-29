@@ -61,6 +61,8 @@ class PostDetailAdapter(private val post: PostModel?, private val commentModelLi
         when (holder) {
             is PostItemViewHolder -> {
                 post?.let { item ->
+                    holder.txtVote.text = item.votes_count.toString()
+                    holder.txtTotalComment.text = item.comments_count.toString()
                     holder.txtTitle.text = item.title
                     holder.txtContent.text = item.content
                     holder.txtName.text = item.user?.username
@@ -69,7 +71,6 @@ class PostDetailAdapter(private val post: PostModel?, private val commentModelLi
                         .placeholder(R.drawable.avartar_profile)
                         .error(R.drawable.avartar_profile)
                         .into(holder.imgProfile)
-
                 }
             }
             is CommentBarViewHolder -> {
