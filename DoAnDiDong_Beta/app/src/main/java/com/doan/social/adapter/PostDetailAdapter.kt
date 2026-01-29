@@ -4,10 +4,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.doan.social.R
-import com.doan.social.model.CommentModel
+import com.doan.social.model.Comment
 
 
-class PostDetailAdapter(private val commentList: MutableList<CommentModel>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class PostDetailAdapter(private val commentList: MutableList<Comment>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     private val VIEW_TYPE_POST_ITEM = 0
     private val VIEW_TYPE_COMMENT_BAR = 1
     private val VIEW_TYPE_COMMENT_ITEM = 2

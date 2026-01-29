@@ -59,18 +59,18 @@ class LoginActivity : AppCompatActivity() {
 
         //Đăng nhập
         val onboardprefs = getSharedPreferences("onboarding_done", MODE_PRIVATE)
-        edtEmail = findViewById(R.id.edtRegEmail)
+        edtEmail = findViewById(R.id.txtForgotEmail)
         edtPassword = findViewById(R.id.edtRegPassword)
         val userViewmodel: UserViewmodel = UserViewmodel(client)
         var user: UserRequest
-        findViewById<Button>(R.id.btnLogin).setOnClickListener {
-            onboardprefs.edit { putBoolean("onboarding_done", true) }
+        findViewById<Button>(R.id.btnForgotContinue).setOnClickListener {
+            Log.d("onboard", onboardprefs.getBoolean("onboarding_done",false).toString())
             lifecycleScope.launch {
                 user = UserRequest(edtEmail.text.toString(), edtPassword.text.toString())
                 val userData = userViewmodel.postLogin(user)
                 val userdata = getSharedPreferences("user_data", MODE_PRIVATE)
                 if (userData?.data?.accessToken!= null) {
-
+                    onboardprefs.edit { putBoolean("onboarding_done", true) }
                     val intent = Intent(this@LoginActivity, HomeActivity::class.java).apply {
                         userdata.edit {
                             putString("accessToken", userData.data.accessToken)

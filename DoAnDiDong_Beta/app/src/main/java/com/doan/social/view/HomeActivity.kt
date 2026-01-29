@@ -1,10 +1,8 @@
 package com.doan.social.view
 
-import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
-import android.widget.Button
-import android.widget.Toast
+import android.util.Log
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -15,17 +13,18 @@ import androidx.recyclerview.widget.RecyclerView
 import com.doan.social.R
 import com.doan.social.adapter.HomeAdapter
 import com.doan.social.model.PostModel
-import com.doan.social.viewmodel.HomeViewModel
+import com.doan.social.viewmodel.PostViewModel
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.coroutines.launch
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
 
 class HomeActivity : AppCompatActivity() {
 
-    private var homeViewModel = HomeViewModel()
+    private var postViewModel = PostViewModel()
     private lateinit var postList: MutableList<PostModel>
     private lateinit var rcv_home: RecyclerView
 
-    @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -35,26 +34,43 @@ class HomeActivity : AppCompatActivity() {
             insets
         }
 
+        val userdata = getSharedPreferences("user_data", MODE_PRIVATE)
+        val accessToken = userdata.getString("accessToken", "")
+
         rcv_home = findViewById(R.id.rcvHome)
         lifecycleScope.launch {
-            postList = homeViewModel.getPost()
+            postList = postViewModel.getPost()
             rcv_home.layoutManager = LinearLayoutManager(this@HomeActivity)
             rcv_home.adapter = HomeAdapter(postList, object : HomeAdapter.OnClickPostItem {
-                override fun onClickPostItem(post: Int) {
+                override fun onClickPostItem(post: PostModel) {
                     val intent = Intent(this@HomeActivity, PostDetailActivity::class.java)
-                    intent.putExtra("post", post)
+                    val postJson = Json.encodeToString(post)
+                    intent.putExtra("post_data",postJson)
                     startActivity(intent)
+                }
+                override fun onVoteClick(post: PostModel, voteType: Int) {
+                    val typeString = if (voteType == 1) "upvote" else "downvote"
+
+                    lifecycleScope.launch {
+                        val newScore = postViewModel.votePost(post.id, typeString, accessToken)
+                        if (newScore != null) {
+                            post.votes_count = newScore
+                            post.user_vote = if (post.user_vote == voteType) 0 else voteType
+                            rcv_home.adapter?.notifyDataSetChanged()
+                        }
+                        postList = postViewModel.getPost()
+                        postList.forEach { post ->
+                            val comments = postViewModel.getCommentsByPost(post.id)
+                            post.comments_count = calculateTotalComments(comments)
+                        }
+                        rcv_home.adapter?.notifyDataSetChanged()
+                    }
                 }
             })
         }
-        val userdata = getSharedPreferences("user_data", MODE_PRIVATE)
-        val accessToken = userdata.getString("accessToken", "")
-//        btn_createPost = findViewById(R.id.btn_createPost)
-
 
         val botNav = findViewById<BottomNavigationView>(R.id.btnNavi)
         botNav.setSelectedItemId(R.id.bottom_home)
-
 
         botNav.setOnItemSelectedListener { item ->
             when(item.itemId){
@@ -79,12 +95,5 @@ class HomeActivity : AppCompatActivity() {
                 else -> false
             }
         }
-
-//        btn_createPost.setOnClickListener {
-//            val intent = Intent(this, PostCreateActivity::class.java)
-//            startActivity(intent)
-//        }
     }
 }
-
-

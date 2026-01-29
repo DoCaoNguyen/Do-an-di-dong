@@ -27,7 +27,7 @@ class PostProfileAdapter(private val postList: MutableList<PostModel>, private v
         val item = postList[position]
         holder.txtTitle.text = item.title
         holder.txtContent.text = item.content
-        holder.txtName.text = item.user.username
+        holder.txtName.text = item.user?.username
         Glide.with(holder.itemView.context)
             .load(item.user?.avatarurl)
             .placeholder(R.drawable.avartar_profile)
@@ -42,9 +42,9 @@ class PostProfileAdapter(private val postList: MutableList<PostModel>, private v
 
     class PostViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         var txtTitle = itemView.findViewById<TextView>(R.id.txtTitle)
-        var txtContent = itemView.findViewById<TextView>(R.id.txtContent)
-        var txtName = itemView.findViewById<TextView>(R.id.txtName)
-        var imgProfile = itemView.findViewById<ImageView>(R.id.imgProfile)
+        var txtContent = itemView.findViewById<TextView>(R.id.txtCommentContent)
+        var txtName = itemView.findViewById<TextView>(R.id.txtCommentName)
+        var imgProfile = itemView.findViewById<ImageView>(R.id.imgCommentProfile)
     }
 
     interface OnClickPostItem{

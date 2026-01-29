@@ -1,7 +1,7 @@
 package com.doan.social.view
 
-import android.content.Intent
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -10,10 +10,18 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.doan.social.R
-import com.doan.social.adapter.HomeAdapter
+import com.doan.social.adapter.PostDetailAdapter
+import com.doan.social.model.CommentModel
+import com.doan.social.model.PostModel
+import com.doan.social.viewmodel.PostViewModel
 import kotlinx.coroutines.launch
+import kotlinx.serialization.json.Json
 
 class PostDetailActivity : AppCompatActivity() {
+    private val postViewModel = PostViewModel()
+
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -22,14 +30,32 @@ class PostDetailActivity : AppCompatActivity() {
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             insets
         }
-        val rcv_postdetail = findViewById<RecyclerView>(R.id.rcvPostDetail)
-        lifecycleScope.launch {
-//            commentList = commentViewModel.getComment()
-            rcv_postdetail.layoutManager = LinearLayoutManager(this@PostDetailActivity)
-//            rcv_postdetail.adapter = HomeAdapter(commentList)
 
+        val rcvPostDetail = findViewById<RecyclerView>(R.id.rcvPostDetail)
+
+        lifecycleScope.launch {
+            val postJson = intent.getStringExtra("post_data")
+            if (postJson != null) {
+                val post = Json.decodeFromString<PostModel>(postJson)
+                val commentList = postViewModel.getCommentsByPost(post.id)
+                val totalCount = calculateTotalComments(commentList)
+                post.comments_count = totalCount
+                rcvPostDetail.adapter = PostDetailAdapter(post, commentList)
+            }
+            else {
+                Toast.makeText(this@PostDetailActivity, "Không tìm thấy bài viết", Toast.LENGTH_SHORT).show()
+            }
+            rcvPostDetail.layoutManager = LinearLayoutManager(this@PostDetailActivity)
         }
 
-
     }
+}
+
+fun calculateTotalComments(comments: List<CommentModel>): Int {
+    var count = 0
+    for (comment in comments) {
+        count++
+        count += calculateTotalComments(comment.replies)
+    }
+    return count
 }
