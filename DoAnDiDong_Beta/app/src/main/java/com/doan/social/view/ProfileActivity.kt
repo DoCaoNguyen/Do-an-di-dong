@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -20,6 +21,8 @@ import com.doan.social.model.UserProfileModel
 import com.doan.social.viewmodel.UserViewmodel
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.coroutines.launch
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
 import okhttp3.OkHttpClient
 import xyz.schwaab.avvylib.AvatarView
 import java.time.LocalDate
@@ -66,13 +69,13 @@ class ProfileActivity : AppCompatActivity(), PostProfileAdapter.OnClickPostItem 
         }
 
 
-    fun reloadProfile() {val userdata = getSharedPreferences("user_data", MODE_PRIVATE)
+    fun reloadProfile() {
+        val userdata = getSharedPreferences("user_data", MODE_PRIVATE)
         val accessToken = userdata.getString("accessToken", "")
         val userId = userdata.getInt("userid",0)
 
         lifecycleScope.launch {
             user = postView.getUserProfile(accessToken)
-
             saveUserToPrefs(user)
             avtV_user.setAvatar(user.avatarurl)
             txt_userName.setText(user.username)
@@ -144,7 +147,19 @@ class ProfileActivity : AppCompatActivity(), PostProfileAdapter.OnClickPostItem 
     }
 
     override fun onClickPostItem(post: Int) {
-        TODO("Not yet implemented")
+        val selectedPost = listPosts.find { postItem ->
+            postItem.id == post
+        }
+
+        if (selectedPost != null) {
+            val postJson = Json.encodeToString(selectedPost)
+
+            val intent = Intent(this, PostDetailActivity::class.java)
+            intent.putExtra("post_data", postJson)
+            startActivity(intent)
+        } else {
+            Toast.makeText(this, "Không tìm thấy bài viết", Toast.LENGTH_SHORT).show()
+        }
     }
 
     fun AvatarView.setAvatar(url: String?) {
