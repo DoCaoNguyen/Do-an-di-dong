@@ -13,6 +13,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="#1A4B67D3"
         android:padding="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -21,7 +22,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView
-            android:id="@+id/txtName"
+            android:id="@+id/txtCommentName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
@@ -30,25 +31,23 @@
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.076"
-            app:layout_constraintStart_toEndOf="@+id/imgProfile"
+            app:layout_constraintStart_toEndOf="@+id/imgCommentProfile"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/txtComment"
+            android:id="@+id/txtCommentContent"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
             android:text="TextView"
-            app:layout_constraintBottom_toTopOf="@+id/btnReply"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="@+id/imgProfile"
-            app:layout_constraintTop_toBottomOf="@+id/imgProfile"
-            app:layout_constraintVertical_bias="0.0" />
+            app:layout_constraintStart_toStartOf="@+id/imgCommentProfile"
+            app:layout_constraintTop_toBottomOf="@+id/imgCommentProfile" />
 
         <xyz.schwaab.avvylib.AvatarView
 
-            android:id="@+id/imgProfile"
+            android:id="@+id/imgCommentProfile"
             android:layout_width="50dp"
             android:layout_height="50dp"
             app:avvy_border_thickness="0dp"
@@ -56,18 +55,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:srcCompat="@tools:sample/avatars" />
-
-        <TextView
-            android:id="@+id/btnReply"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/manrope"
-            android:text="Trả lời"
-            android:textSize="14sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="1.0"
-            app:layout_constraintStart_toStartOf="parent" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

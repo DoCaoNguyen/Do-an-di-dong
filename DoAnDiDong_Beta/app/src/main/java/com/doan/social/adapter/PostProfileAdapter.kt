@@ -42,9 +42,9 @@ class PostProfileAdapter(private val postList: MutableList<PostModel>, private v
 
     class PostViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         var txtTitle = itemView.findViewById<TextView>(R.id.txtTitle)
-        var txtContent = itemView.findViewById<TextView>(R.id.txtComment)
-        var txtName = itemView.findViewById<TextView>(R.id.txtName)
-        var imgProfile = itemView.findViewById<ImageView>(R.id.imgProfile)
+        var txtContent = itemView.findViewById<TextView>(R.id.txtCommentContent)
+        var txtName = itemView.findViewById<TextView>(R.id.txtCommentName)
+        var imgProfile = itemView.findViewById<ImageView>(R.id.imgCommentProfile)
     }
 
     interface OnClickPostItem{

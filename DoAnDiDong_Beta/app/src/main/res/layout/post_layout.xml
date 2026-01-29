@@ -6,8 +6,8 @@
     android:layout_height="wrap_content"
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintEnd_toEndOf="parent"
-    android:layout_marginVertical="8dp"
-    app:cardElevation="2dp"
+    android:layout_marginVertical="4dp"
+    app:cardElevation="1dp"
     app:cardBackgroundColor="@android:color/white">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -16,7 +16,16 @@
         android:padding="16dp">
 
         <TextView
-            android:id="@+id/txtName"
+            android:id="@+id/txtTotalComment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="0"
+            app:layout_constraintEnd_toEndOf="@+id/imgComment"
+            app:layout_constraintStart_toStartOf="@+id/imgComment"
+            app:layout_constraintTop_toBottomOf="@+id/imgComment" />
+
+        <TextView
+            android:id="@+id/txtCommentName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
@@ -25,7 +34,7 @@
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.076"
-            app:layout_constraintStart_toEndOf="@+id/imgProfile"
+            app:layout_constraintStart_toEndOf="@+id/imgCommentProfile"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
@@ -36,40 +45,30 @@
             android:text="TextView"
             android:textSize="16sp"
             android:textStyle="bold"
-            app:layout_constraintEnd_toStartOf="@+id/imageButton2"
+            app:layout_constraintEnd_toStartOf="@+id/imgbtnUpVote"
             app:layout_constraintHorizontal_bias="0.038"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/imgProfile" />
+            app:layout_constraintTop_toBottomOf="@+id/imgCommentProfile" />
 
         <TextView
-            android:id="@+id/txtComment"
-            android:layout_width="wrap_content"
+            android:id="@+id/txtCommentContent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
+            android:layout_marginEnd="16dp"
             android:layout_marginBottom="16dp"
             android:text="TextView"
-            app:layout_constraintBottom_toTopOf="@+id/imageButton"
-            app:layout_constraintEnd_toStartOf="@+id/imageButton2"
+            android:maxLines="3"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/imgComment"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="@+id/txtTitle"
             app:layout_constraintTop_toBottomOf="@+id/txtTitle"
             app:layout_constraintVertical_bias="0.0" />
 
-        <ImageButton
-            android:id="@+id/imageButton"
-            android:layout_width="100dp"
-            android:layout_height="40dp"
-            android:layout_marginBottom="4dp"
-            android:background="@android:color/transparent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/imageButton3"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="@+id/imgProfile"
-            app:srcCompat="@drawable/img_comment" />
-
         <xyz.schwaab.avvylib.AvatarView
 
-            android:id="@+id/imgProfile"
+            android:id="@+id/imgCommentProfile"
             android:layout_width="50dp"
             android:layout_height="50dp"
             app:avvy_border_thickness="0dp"
@@ -81,22 +80,22 @@
 
 
         <ImageButton
-            android:id="@+id/imageButton2"
+            android:id="@+id/imgbtnUpVote"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@android:color/transparent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/imgProfile"
+            app:layout_constraintTop_toTopOf="@+id/imgCommentProfile"
             app:srcCompat="@drawable/ic_upvote" />
 
         <ImageButton
-            android:id="@+id/imageButton3"
+            android:id="@+id/imgbtnDownVote"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:background="@android:color/transparent"
-            app:layout_constraintEnd_toEndOf="@+id/imageButton2"
-            app:layout_constraintStart_toStartOf="@+id/imageButton2"
+            app:layout_constraintEnd_toEndOf="@+id/imgbtnUpVote"
+            app:layout_constraintStart_toStartOf="@+id/imgbtnUpVote"
             app:layout_constraintTop_toBottomOf="@+id/txtVote"
             app:srcCompat="@drawable/ic_downvote" />
 
@@ -106,9 +105,29 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:text="0"
-            app:layout_constraintEnd_toEndOf="@+id/imageButton2"
-            app:layout_constraintStart_toStartOf="@+id/imageButton2"
-            app:layout_constraintTop_toBottomOf="@+id/imageButton2" />
+            app:layout_constraintEnd_toEndOf="@+id/imgbtnUpVote"
+            app:layout_constraintStart_toStartOf="@+id/imgbtnUpVote"
+            app:layout_constraintTop_toBottomOf="@+id/imgbtnUpVote" />
+
+        <ImageView
+            android:id="@+id/imgComment"
+            android:layout_width="24dp"
+            android:layout_height="25dp"
+            android:layout_marginTop="4dp"
+            app:layout_constraintEnd_toEndOf="@+id/imgbtnDownVote"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@+id/imgbtnDownVote"
+            app:layout_constraintTop_toBottomOf="@+id/imgbtnDownVote"
+            app:srcCompat="@drawable/ic_comment" />
+
+        <TextView
+            android:id="@+id/txtSeeMore"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="TextView"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/txtCommentContent"
+            app:layout_constraintTop_toBottomOf="@+id/txtCommentContent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.cardview.widget.CardView>

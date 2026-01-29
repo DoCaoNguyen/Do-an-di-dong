@@ -39,7 +39,7 @@
         app:layout_constraintStart_toStartOf="parent" />
 
     <EditText
-        android:id="@+id/edtRegEmail"
+        android:id="@+id/txtForgotEmail"
         android:layout_width="320dp"
         android:layout_height="50dp"
         android:backgroundTint="#6174D9"
@@ -60,13 +60,13 @@
         android:ems="10"
         android:hint="Mật khẩu"
         android:inputType="textPassword"
-        app:layout_constraintEnd_toEndOf="@+id/edtRegEmail"
+        app:layout_constraintEnd_toEndOf="@+id/txtForgotEmail"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/edtRegEmail"
-        app:layout_constraintTop_toBottomOf="@+id/edtRegEmail" />
+        app:layout_constraintStart_toStartOf="@+id/txtForgotEmail"
+        app:layout_constraintTop_toBottomOf="@+id/txtForgotEmail" />
 
     <Button
-        android:id="@+id/btnLogin"
+        android:id="@+id/btnForgotContinue"
         android:layout_width="320dp"
         android:layout_height="50dp"
         android:layout_marginTop="92dp"
@@ -86,7 +86,7 @@
         android:text="Chưa có tài khoản?"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnLogin" />
+        app:layout_constraintTop_toBottomOf="@+id/btnForgotContinue" />
 
     <TextView
         android:id="@+id/btnForgotPassword"

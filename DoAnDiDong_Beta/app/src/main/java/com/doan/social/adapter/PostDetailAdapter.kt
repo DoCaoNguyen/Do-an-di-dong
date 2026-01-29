@@ -2,20 +2,26 @@ package com.doan.social.adapter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.doan.social.R
-import com.doan.social.model.Comment
+import com.doan.social.model.CommentModel
+import com.doan.social.model.PostModel
 
 
-class PostDetailAdapter(private val commentList: MutableList<Comment>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
-    private val VIEW_TYPE_POST_ITEM = 0
-    private val VIEW_TYPE_COMMENT_BAR = 1
-    private val VIEW_TYPE_COMMENT_ITEM = 2
+class PostDetailAdapter(private val post: PostModel?, private val commentModelList: MutableList<CommentModel>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+    private val VIEW_TYPE_APP_BAR = 0
+    private val VIEW_TYPE_POST_ITEM = 1
+    private val VIEW_TYPE_COMMENT_BAR = 2
+    private val VIEW_TYPE_COMMENT_ITEM = 3
 
     override fun getItemViewType(position: Int): Int {
         return when(position){
-            0 -> VIEW_TYPE_POST_ITEM
-            1 -> VIEW_TYPE_COMMENT_BAR
+            0 -> VIEW_TYPE_APP_BAR
+            1 -> VIEW_TYPE_POST_ITEM
+            2 -> VIEW_TYPE_COMMENT_BAR
             else -> VIEW_TYPE_COMMENT_ITEM
         }
     }
@@ -25,14 +31,22 @@ class PostDetailAdapter(private val commentList: MutableList<Comment>) : Recycle
         viewType: Int
     ): RecyclerView.ViewHolder {
         return when(viewType){
+
+            VIEW_TYPE_APP_BAR -> {
+                val itemView = LayoutInflater.from(parent.context).inflate(R.layout.appbar_layout, parent, false)
+                AppBarViewHolder(itemView)
+            }
+
             VIEW_TYPE_POST_ITEM -> {
                 val itemView = LayoutInflater.from(parent.context).inflate(R.layout.post_layout,parent,false)
                 PostItemViewHolder(itemView)
             }
+
             VIEW_TYPE_COMMENT_BAR -> {
-                val itemView = LayoutInflater.from(parent.context).inflate(R.layout.postbar_layout,parent,false)
+                val itemView = LayoutInflater.from(parent.context).inflate(R.layout.commentbar_layout,parent,false)
                 CommentBarViewHolder(itemView)
             }
+
             else -> {
                 val itemView = LayoutInflater.from(parent.context).inflate(R.layout.comment_layout,parent,false)
                 CommentItemViewHolder(itemView)
@@ -45,19 +59,55 @@ class PostDetailAdapter(private val commentList: MutableList<Comment>) : Recycle
         position: Int
     ) {
         when (holder) {
-            is CommentItemViewHolder -> {
-                val item = commentList[position - 2]
-            }
+            is PostItemViewHolder -> {
+                post?.let { item ->
+                    holder.txtTitle.text = item.title
+                    holder.txtContent.text = item.content
+                    holder.txtName.text = item.user?.username
+                    Glide.with(holder.itemView.context)
+                        .load(item.user?.avatarurl)
+                        .placeholder(R.drawable.avartar_profile)
+                        .error(R.drawable.avartar_profile)
+                        .into(holder.imgProfile)
 
+                }
+            }
             is CommentBarViewHolder -> {
 
+            }
+            is CommentItemViewHolder -> {
+                val item = commentModelList[position - 3]
+                holder.txtCommentName.text = item.user?.username
+                holder.txtCommentContent.text = item.comment
+                val imgProfile = holder.itemView.findViewById<ImageView>(R.id.imgCommentProfile)
+                Glide.with(holder.itemView.context)
+                    .load(item.user?.avatarurl)
+                    .placeholder(R.drawable.avartar_profile)
+                    .into(imgProfile)
             }
         }
     }
 
-    override fun getItemCount(): Int = commentList.size + 2
+    override fun getItemCount(): Int = commentModelList.size + 3
 
-    class PostItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
-    class CommentBarViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
-    class CommentItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
+    class AppBarViewHolder(itemView: View): RecyclerView.ViewHolder(itemView)
+    class PostItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
+        var txtTitle = itemView.findViewById<TextView>(R.id.txtTitle)
+        var txtContent = itemView.findViewById<TextView>(R.id.txtCommentContent)
+        var txtName = itemView.findViewById<TextView>(R.id.txtCommentName)
+        var imgProfile = itemView.findViewById<ImageView>(R.id.imgCommentProfile)
+        var txtSeeMore = itemView.findViewById<TextView>(R.id.txtSeeMore)
+        var imgUpvote = itemView.findViewById<ImageView>(R.id.imgbtnUpVote)
+        var imgDownvote = itemView.findViewById<ImageView>(R.id.imgbtnDownVote)
+        var txtVote = itemView.findViewById<TextView>(R.id.txtVote)
+        var txtTotalComment = itemView.findViewById<TextView>(R.id.txtTotalComment)
+    }
+    class CommentBarViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+
+    }
+    class CommentItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
+        var imgCommentProfile = itemView.findViewById<ImageView>(R.id.imgCommentProfile)
+        var txtCommentName = itemView.findViewById<TextView>(R.id.txtCommentName)
+        var txtCommentContent = itemView.findViewById<TextView>(R.id.txtCommentContent)
+    }
 }

@@ -2,7 +2,7 @@ package com.doan.social.view
 
 import android.content.Intent
 import android.os.Bundle
-import android.widget.Toast
+import android.util.Log
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -13,13 +13,15 @@ import androidx.recyclerview.widget.RecyclerView
 import com.doan.social.R
 import com.doan.social.adapter.HomeAdapter
 import com.doan.social.model.PostModel
-import com.doan.social.viewmodel.HomeViewModel
+import com.doan.social.viewmodel.PostViewModel
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.coroutines.launch
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
 
 class HomeActivity : AppCompatActivity() {
 
-    private var homeViewModel = HomeViewModel()
+    private var postViewModel = PostViewModel()
     private lateinit var postList: MutableList<PostModel>
     private lateinit var rcv_home: RecyclerView
 
@@ -34,12 +36,13 @@ class HomeActivity : AppCompatActivity() {
 
         rcv_home = findViewById(R.id.rcvHome)
         lifecycleScope.launch {
-            postList = homeViewModel.getPost()
+            postList = postViewModel.getPost()
             rcv_home.layoutManager = LinearLayoutManager(this@HomeActivity)
             rcv_home.adapter = HomeAdapter(postList, object : HomeAdapter.OnClickPostItem {
-                override fun onClickPostItem(post: Int) {
+                override fun onClickPostItem(post: PostModel) {
                     val intent = Intent(this@HomeActivity, PostDetailActivity::class.java)
-                    intent.putExtra("post", post)
+                    val postJson = Json.encodeToString(post)
+                    intent.putExtra("post_data",postJson)
                     startActivity(intent)
                 }
             })

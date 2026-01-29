@@ -10,6 +10,8 @@ data class PostModel(
     val image_url: String?,
     val status: String,
     val user: UserPost,
+    val tags: List<Tag>,
+    var isExpanded: Boolean = false
 )
 
 @Serializable

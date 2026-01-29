@@ -1,11 +1,13 @@
 package com.doan.social.view
 
 import android.app.DatePickerDialog
+import android.content.Intent
 import android.icu.util.Calendar
 import android.os.Bundle
 import android.widget.Button
 import android.widget.DatePicker
 import android.widget.EditText
+import android.widget.TextView
 import androidx.activity.SystemBarStyle
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -38,6 +40,15 @@ class RegisterActivity : AppCompatActivity() {
             }, y,m,d)
             dpd.getDatePicker().setMaxDate(System.currentTimeMillis())
             dpd.show()
+        }
+
+        findViewById<TextView>(R.id.btnLoginReg).setOnClickListener {
+            finish()
+            startActivity(Intent(this, LoginActivity::class.java))
+        }
+        findViewById<TextView>(R.id.btnLoginReg2).setOnClickListener {
+            finish()
+            startActivity(Intent(this, LoginActivity::class.java))
         }
 
         findViewById<Button>(R.id.btnRegRegister).setOnClickListener {

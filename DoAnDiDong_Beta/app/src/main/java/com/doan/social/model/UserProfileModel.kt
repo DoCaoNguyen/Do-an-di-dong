@@ -16,5 +16,5 @@ data class UserProfileModel(
     val status: String,
     val followersCount: Int,
     val followingCount: Int,
-    val userTags: List<PostModel>
+    val userTags: List<Tag>
 )

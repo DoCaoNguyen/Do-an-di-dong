@@ -9,17 +9,16 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.doan.social.R
 import com.doan.social.model.PostModel
+import com.doan.social.viewmodel.PostViewModel
 
 class HomeAdapter(private val postList: MutableList<PostModel>, private val listener: OnClickPostItem) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private val VIEW_TYPE_APP_BAR = 0
-    private val VIEW_TYPE_POST_BAR = 1
-    private val VIEW_TYPE_POST_ITEM = 2
+    private val VIEW_TYPE_POST_ITEM = 1
 
     override fun getItemViewType(position: Int): Int {
         return when(position){
             0 -> VIEW_TYPE_APP_BAR
-            1 -> VIEW_TYPE_POST_BAR
             else -> VIEW_TYPE_POST_ITEM
         }
     }
@@ -32,10 +31,6 @@ class HomeAdapter(private val postList: MutableList<PostModel>, private val list
             VIEW_TYPE_APP_BAR -> {
                 val itemView = LayoutInflater.from(parent.context).inflate(R.layout.appbar_layout,parent,false)
                 AppBarViewHolder(itemView)
-            }
-            VIEW_TYPE_POST_BAR -> {
-                val itemView = LayoutInflater.from(parent.context).inflate(R.layout.postbar_layout,parent,false)
-                PostBarViewHolder(itemView)
             }
             else -> {
                 val itemView = LayoutInflater.from(parent.context).inflate(R.layout.post_layout,parent,false)
@@ -50,9 +45,18 @@ class HomeAdapter(private val postList: MutableList<PostModel>, private val list
     ) {
         when (holder) {
             is HomeViewHolder -> {
-                val item = postList[position - 2]
+                val item = postList[position - 1]
                 holder.txtTitle.text = item.title
                 holder.txtContent.text = item.content
+
+                holder.txtContent.post {
+                    if (holder.txtContent.lineCount > 3){
+                        holder.txtSeeMore.visibility = View.VISIBLE
+                    } else {
+                        holder.txtSeeMore.visibility = View.GONE
+                    }
+                }
+
                 holder.txtName.text = item.user?.username
                 Glide.with(holder.itemView.context)
                     .load(item.user?.avatarurl)
@@ -60,8 +64,9 @@ class HomeAdapter(private val postList: MutableList<PostModel>, private val list
                     .error(R.drawable.avartar_profile)
                     .into(holder.imgProfile)
                 holder.itemView.setOnClickListener {
-                    listener.onClickPostItem(item.id)
+                    listener.onClickPostItem(item)
                 }
+
 
             }
             is PostBarViewHolder -> {
@@ -69,22 +74,24 @@ class HomeAdapter(private val postList: MutableList<PostModel>, private val list
         }
     }
 
-    override fun getItemCount(): Int = postList.size + 2
+    override fun getItemCount(): Int = postList.size + 1
 
     class AppBarViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
     class PostBarViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
     class HomeViewHolder(itemView: View, listener: HomeAdapter.OnClickPostItem) : RecyclerView.ViewHolder(itemView) {
         var txtTitle = itemView.findViewById<TextView>(R.id.txtTitle)
-        var txtContent = itemView.findViewById<TextView>(R.id.txtComment)
-        var txtName = itemView.findViewById<TextView>(R.id.txtName)
-        var imgProfile = itemView.findViewById<ImageView>(R.id.imgProfile)
-        var imgUpvote = itemView.findViewById<ImageView>(R.id.imageButton2)
-        var imgDownvote = itemView.findViewById<ImageView>(R.id.imageButton3)
+        var txtContent = itemView.findViewById<TextView>(R.id.txtCommentContent)
+        var txtName = itemView.findViewById<TextView>(R.id.txtCommentName)
+        var imgProfile = itemView.findViewById<ImageView>(R.id.imgCommentProfile)
+        var txtSeeMore = itemView.findViewById<TextView>(R.id.txtSeeMore)
+        var imgUpvote = itemView.findViewById<ImageView>(R.id.imgbtnUpVote)
+        var imgDownvote = itemView.findViewById<ImageView>(R.id.imgbtnDownVote)
         var txtVote = itemView.findViewById<TextView>(R.id.txtVote)
+        var txtTotalComment = itemView.findViewById<TextView>(R.id.txtTotalComment)
     }
 
     interface OnClickPostItem{
-        fun onClickPostItem(post: Int)
+        fun onClickPostItem(post: PostModel)
     }
 
 }

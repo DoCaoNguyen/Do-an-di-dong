@@ -13,6 +13,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.edit
 import androidx.core.net.toFile
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
@@ -98,13 +99,14 @@ class SettingProfileActivity : AppCompatActivity() {
         img_btn_back_profile.setOnClickListener {
             finish()
         }
-
+        val onboardprefs = getSharedPreferences("onboarding_done", MODE_PRIVATE)
         btn_Logout.setOnClickListener {
             lifecycleScope.launch {
                 try {
                     val logoutResponse = settingProfileViewModel.postLogout(accessToken)
                     if (logoutResponse?.status == "success") {
-                        val intent = Intent(this@SettingProfileActivity, LoginActivity::class.java)
+                        onboardprefs.edit { putBoolean("onboarding_done", false) }
+                        val intent = Intent(this@SettingProfileActivity, OnBoardingActivity::class.java)
                         startActivity(intent)
                         finishAffinity()
                     }

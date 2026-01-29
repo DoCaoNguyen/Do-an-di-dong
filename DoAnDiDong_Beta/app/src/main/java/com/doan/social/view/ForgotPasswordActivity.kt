@@ -1,6 +1,8 @@
 package com.doan.social.view
 
 import android.os.Bundle
+import android.widget.Button
+import android.widget.EditText
 import android.widget.ImageButton
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -16,6 +18,11 @@ class ForgotPasswordActivity : AppCompatActivity() {
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             insets
+        }
+
+        findViewById<Button>(R.id.btnForgotContinue).setOnClickListener {
+            val email = findViewById<EditText>(R.id.txtForgotEmail).text
+
         }
 
         findViewById<ImageButton>(R.id.imgbtnBack).setOnClickListener {
