@@ -15,6 +15,7 @@
         android:background="#FFFFFF"
         android:elevation="4dp"
         app:itemIconSize="30dp"
+        android:layout_marginStart="10dp"
         app:itemRippleColor="@android:color/transparent"
         app:labelVisibilityMode="unlabeled"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -25,18 +26,45 @@
 
     <EditText
         android:id="@+id/edt_search"
-        android:layout_width="match_parent"
+        android:layout_width="330dp"
         android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
         android:layout_marginTop="40dp"
+        android:layout_marginEnd="8dp"
         android:background="@drawable/custom_edittext"
         android:ems="10"
         android:focusable="true"
         android:focusableInTouchMode="true"
-        android:hint="Search"
+        android:hint="Tìm kiếm"
         android:inputType="text"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
+        android:textStyle="italic"
+        app:layout_constraintEnd_toStartOf="@+id/imgbtn_search"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageButton
+        android:id="@+id/imgbtn_search"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        app:layout_constraintBottom_toBottomOf="@+id/edt_search"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/edt_search"
+        app:srcCompat="@android:drawable/ic_menu_search"
+
+        android:background="@drawable/custom_edittext"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rcv_searchItem"
+        android:layout_width="409dp"
+        android:layout_height="745dp"
+        android:layout_marginStart="1dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="1dp"
+        android:layout_marginBottom="1dp"
+        app:layout_constraintBottom_toTopOf="@+id/btnNavi"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/edt_search" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
